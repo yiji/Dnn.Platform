@@ -1,19 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="2" MadCap:lastHeight="556" MadCap:lastWidth="1319">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="4" MadCap:lastHeight="891" MadCap:lastWidth="1067">
     <head>
     </head>
     <body>
-        <h1>Troubleshooting. Login Failed</h1>
-        <p><strong>What Happened</strong>: Login was unsuccessful.</p>
+        <h1>Troubleshooting</h1>
+        <h2>Login Failed</h2>
         <p><strong>System Message</strong>: Login Failed, remember that Passwords are case sensitive.</p>
-        <p><b>What to Do</b>: Attempt to logging in again, ensuring Caps Lock is not selected on your keyboard. If you are still unsuccessful, check your user name and password are correct, as detailed in the Welcome message which was sent to you. If you are still unsuccessful,  try <MadCap:xref href="Retrieving your Password.html">See "Retrieving your Password"</MadCap:xref>.</p>
-        <hr />
-        <p><strong>What Happened</strong>: Incorrect password entered multiple times.</p>
+        <p><b>What to Do</b>: Attempt to logging in again, ensuring Caps Lock is not selected on your keyboard. If you are still unsuccessful, check that your user name and password are correct. If you are still unsuccessful,  try <MadCap:xref href="Retrieving your Password.html">"Retrieving your Password"</MadCap:xref>.</p>
+        <h2>Incorrect password entered multiple times</h2>
         <p><strong>System Message</strong>: This account has been locked out after too many unsuccessful login attempts. Please contact your administrator.</p>
         <p><b>What to Do</b>: You are now prevented from logging in, even with the correct details, until an Administrator unlocks the account for you. Contact a site Administrator.</p>
-        <hr />
-        <p><strong>What Happened</strong>: Incorrect password entered multiple times.</p>
         <p><strong>System Message</strong>: This account has been locked out after too many unsuccessful login attempts. Please wait 10 minutes before trying to login again. If you have forgotten your password, please try the Password Reminder option before contacting an Administrator.</p>
         <p><b>What to Do</b>: You are now prevented from logging in until your user account automatically unlocks itself according to the number of minutes displayed in the system message. Alternatively, you can contact an Administrator to unlock the account for you.</p>
+        <h2>Resetting Password Failed</h2>
+        <p>The following error messages may be displayed when password retrieval fails:</p>
+        <ul>
+            <li><strong>Please Enter Your User Name or the Email Address you used during Registration </strong>- Enter your user name or email address into the text box and then click the Retrieve Password link.</li>
+            <li><strong>Please Enter Your User Name</strong> - Enter your user name into the text box and then click the retrieve password link.</li>
+            <li><strong>More than one user has been found with this email address. Please enter your User Name and try again</strong> - Email address can only be used to reset your password if it is unique in the site. If more than one user has the same email address, then the username is the only valid value to reset the password.</li>
+            <li><strong>Reset Password option is currently unavailable</strong> - Email may not be enabled or correctly configured on this site. Administrators should contact their host to check SMTP settings for this site. <MadCap:conditionalText MadCap:conditions="Default.SuperUser Only">SuperUsers, <MadCap:xref href="../../Using the Control Panel/Host Console/Host Settings/Advanced Settings/SMTP Server Settings/Setting the SMTP Server and Port.html">See "Setting the SMTP Server and Port"</MadCap:xref></MadCap:conditionalText></li>
+        </ul>
     </body>
 </html>
