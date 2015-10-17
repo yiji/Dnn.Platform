@@ -8,6 +8,9 @@
 @grid_alt_background_color: #eee;
 @grid_hover_background_color: #d9ecfa;
 @grid_hover_dropdown_background_color: #0087c6;
+@contextMenu_hover_background_color: #d9ecfa;
+@fa_error_color: #d00;
+@fa_warning_color: #ff8c00;
 
 @primaryBtn_background_color: #0087c6;
 @primaryBtn_color: #fff;
@@ -15,6 +18,8 @@
 @secondaryBtn_color: #333;
 @otherBtn_background_color: #fff;
 @otherBtn_color: #333;
+@boxShadow_color: #aaa;
+@disabledOption_color: #999;
 
 /*Units*/
 @width: 950px;
@@ -23,6 +28,7 @@
 @panel_width: @width - 2 * @panel_OuterMargin;
 @textBox_padding: 9px;
 @panel_innerWidth: @panel_width - 2 * @panel_InnerMargin -  2 * @textBox_padding;
+@languageSelector_position: @panel_width - 275;
 
 @border_radius: 4px;
 
@@ -46,7 +52,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     padding-bottom: 10px;
     border-bottom: solid 1px @border_color;
     background-color: @header_background_color;
-    box-shadow: 0px 2px 2px @border_color;
+    box-shadow: 0px 2px 2px @boxShadow_color;
 }
 
 .dccContainer .dccHeading span{
@@ -67,6 +73,10 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
     border: solid 1px @border_color;
     border-radius: 4px;
+}
+
+.dccContainer .dccMenu {
+    position: relative;
 }
 
 .dccContainer .dccMenu ul {
@@ -137,7 +147,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     transition: background 100ms linear;;
 }
 
-.dccContainer .dccTable tbody tr:hover {
+.dccContainer .dccTable > tbody > tr:hover {
     background: @grid_hover_background_color;
 }
 
@@ -158,7 +168,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     text-align: left;
 }
 
-.dccContainer .dccTable .fa{
+.dccContainer .dccTable .dnni{
     font-size: 18px;
 }
 
@@ -168,44 +178,37 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     border-bottom-right-radius: 5px;
 }
 
-.dccContainer .dccTable tfoot td > div > div {
-    margin-top: 6px;
-}
 
-.dccContainer .dccTable tfoot td > div > div.left {
-    margin-bottom: 6px;
-}
-
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr th i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr:hover td:last-child {
+.dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
     background: @grid_hover_dropdown_background_color;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td,
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row:hover td{
+.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td{
     background: @grid_hover_dropdown_background_color;
     color: @panel_background_color;
     border-color: @grid_hover_dropdown_background_color;
@@ -216,24 +219,43 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
 }
 
-.dccContainer ul.pager{
+//Pager
+
+.dccContainer .dccTable .dccPager {
+    width: 100%;
+}
+
+.dccContainer .dccTable .dccPager td {
+    padding: 0px;
+    height: 40px;
+    width: 33%;
+}
+
+.dccContainer .dccTable .dccPager td select {
+    margin-bottom: 1px;
+}
+
+.dccContainer .dccTable .dccPager td div {
+    margin-bottom: 0px;
+}
+
+.dccContainer .dccTable .dccPager td div.right {
+    margin-top: 9px;
+}
+
+.dccContainer .dccTable .dccPager td ul {
     display: block;
     list-style-type: none;
-    margin: 0 10px 0 8px;
+    margin: 4px 10px 0 8px;
     padding: 0;
 }
 
-.dccContainer ul.pager > li{
+.dccContainer .dccTable .dccPager td ul > li {
     display: inline-block;
     list-style-type: none;
 }
 
-.dccContainer .dccTable td a{
-    color: #0087c6;
-    text-decoration: none;
-}
-
-.dccContainer .dccTable td a.prev, .dccContainer .dccTable td a.next{
+.dccContainer .dccTable .dccPager td a.prev, .dccContainer .dccTable .dccPager td a.next {
     background-position: center center;
     background-repeat: no-repeat;
     border: 1px solid @border_color;
@@ -245,15 +267,15 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
 }
 
-.dccContainer .dccTable td a.prev {
+.dccContainer .dccTable .dccPager td a.prev {
     background-image: url('images/left.png');
 }
 
-.dccContainer .dccTable td a.next {
+.dccContainer .dccTable .dccPager td a.next {
     background-image: url('images/right.png');
 }
 
-.dccContainer .dccTable td a.prev.disabled, .dccContainer .dccTable td a.next.disabled {
+.dccContainer .dccTable .dccPager td a.prev.disabled, .dccContainer .dccTable .dccPager td a.next.disabled {
     opacity: 0.50;
     cursor: default;
 }
@@ -273,19 +295,20 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditRow {
     float: left;
+    position: relative;
     width: 100%;
 }
 
 .dccContainer div.dccEditRow > div {
     float: left;
+}
+
+.dccContainer div.dccEditRow > div.dccExtraMargin {
     margin-right: 25px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div {
-    width: 33%;
-    float: left;
-    margin: 0 0 9px 0;
-    position: relative;
+    margin-right: 25px;
 }
 
 .dccContainer div.dccEditRow > div > label{
@@ -295,7 +318,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditRow > div > textarea{
     height: 35px;
-    width: @panel_innerWidth;
+    width: @panel_innerWidth - 20;
 }
 
 .dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
@@ -311,14 +334,34 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 .dccContainer div.dccEditRow > div > textarea.dccCode{
-    width:750px;
+    width:@panel_innerWidth;
     height:350px
 }
+
+.dccContainer .dccEditRow i {
+    float: right;
+}
+
+.dccContainer i.dnni-exclamation {
+    font-size: 18px;
+    margin-left: 5px;
+    color: transparent;
+    display: block;
+}
+
+.dccContainer .dccError i.dnni-exclamation {
+    color: @dnni_error_color;
+}
+
+.dccContainer .dccWarning i.dnni-exclamation {
+    color: @dnni_warning_color;
+}
+
 .dccContainer div.dccEditRow > div.toggle {
     float: right;
     padding-right: 0px;
     padding-top: 25px;
-    margin-right: 0px;
+    margin-right: 20px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div.toggle {
@@ -334,6 +377,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer div.dccEditRow > div.toggle > span.label {
     padding-bottom: 15px;
     display: inline-block;
+    min-width: 100px;
 }
 
 .dccContainer .dnnCheckbox {
@@ -400,7 +444,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background: @otherBtn_background_color;
     color: @otherBtn_color;
     display: inline-block;
-    padding: 9px 9px;
+    padding: 8px;
     cursor: pointer;
     min-width: 75px;
     border-radius: 3px;
@@ -408,6 +452,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     font-size: 13px;
     border: 1px solid @border_color;
     text-align: center;
+    line-height:normal;
 }
 
 .dccContainer div.dccEditForm > div > a.primarybtn, .dccContainer div.dccEditForm > div > a.secondarybtn {
@@ -536,15 +581,11 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     margin-top: 20px;
 }
 
-.dccContainer .dccExtraMargin {
-    margin-top: 25px;
-}
-
 .dccContainer div.dccLanguageSelector{
-    float: right;
+    position: absolute;
+    top: 6px;
+    left: @languageSelector_position;
     display: inline-block;
-    padding-top: 15px;
-    padding-right: 25px;
 }
 
 .dccContainer div.dccLanguageSelector span{
@@ -556,4 +597,62 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     padding: 2px 5px 5px 5px;
     font-size:15px;
 }
+.dccContainer ul#templateEditorContextMenu {
+    float: left;
+    position: relative;
+    z-index: 5;
+    list-style: none;
+    border: solid 1px @border_color;
+    box-shadow: 5px 5px 5px @boxShadow_color;
+    border-radius: @border_radius;
+    background-color: @panel_background_color;
+}
 
+.dccContainer ul#templateEditorContextMenu li{
+    position: relative;
+    margin-right: 10px;
+}
+
+.dccContainer ul#templateEditorContextMenu li:hover {
+    background:@contextMenu_hover_background_color;
+}
+
+.dccContainer ul#templateEditorContextMenu li div {
+    display:block;
+    padding:5px;
+    text-decoration:none;
+    cursor: pointer;
+    min-width: 110px;
+}
+
+.dccContainer ul#templateEditorContextMenu li div span{
+    padding-right: 5px;
+}
+
+.dccContainer ul#templateEditorContextMenu li div > i {
+    float: right;
+}
+
+.dccContainer ul#templateEditorContextMenu li ul {
+    list-style: none;
+    position: absolute;
+    left: -9999px;
+    border: solid 1px @border_color;
+    box-shadow: 5px 5px 5px @boxShadow_color;
+    border-radius: @border_radius;
+    background-color: @panel_background_color;
+}
+
+.dccContainer ul#templateEditorContextMenu li:hover > ul {
+    left: 100px;
+    top: 5px
+}
+
+.dccContainer div.dccEditRow select option {
+    padding-left: 20px;
+}
+
+.dccContainer div.dccEditRow select option:disabled {
+    color: @disabledOption_color;
+    padding-left: 0px;
+}

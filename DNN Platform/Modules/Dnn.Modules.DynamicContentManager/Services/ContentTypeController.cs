@@ -1,15 +1,20 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -61,6 +66,24 @@ namespace Dnn.Modules.DynamicContentManager.Services
         }
 
         /// <summary>
+        /// GetAllContentFields retrieves all the content fields including those of enclosed content types
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllContentFields(int contentTypeId)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var response = new
+                            {
+                                results = ProcessFields(contentType, String.Empty)
+                            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        /// <summary>
         /// GetContentFields retrieves a page of Content Fields
         /// </summary>
         /// <param name="contentTypeId">The id of the ContentType</param>
@@ -68,7 +91,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="pageSize">The size of page to fetch</param>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex, int pageSize)
+        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex = 0, int pageSize = 999)
         {
             return GetPage<FieldDefinition, ContentFieldViewModel>(
                                 () =>
@@ -77,6 +100,19 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                         return new PagedList<FieldDefinition>(contentType.FieldDefinitions, pageIndex, pageSize);
                                     },
                                 contentField => new ContentFieldViewModel(contentField, PortalSettings));
+        }
+
+        /// <summary>
+        /// Move a Field's position in the list
+        /// </summary>
+        /// <param name="viewModel">A ViewModel (DTO) represneting the object to be moved</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MoveContentField(MoveContentFieldViewModel viewModel)
+        {
+            FieldDefinitionManager.Instance.MoveFieldDefintion(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new {});
         }
 
         /// <summary>
@@ -106,6 +142,49 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
         }
 
+        private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
+        {
+            var fields = new ArrayList();
+
+            var locale = Thread.CurrentThread.CurrentUICulture.ToString();
+
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                var key = String.Format(FieldDefinitionManager.NameKey, definition.FieldDefinitionId);
+                var fieldName = definition.Name;
+                var localizedName = (locale == PortalSettings.DefaultLanguage)
+                                        ? fieldName
+                                        : ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, locale, PortalSettings.PortalId);
+
+                if (definition.IsReferenceType)
+                {
+                    var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    newPrefix += "/";
+
+                    var field = new
+                                {
+                                    name = localizedName,
+                                    fields = ProcessFields(definition.ContentType, newPrefix)
+                                };
+
+                    fields.Add(field);
+                }
+                else
+                {
+
+                    var field = new
+                                {
+                                    fieldName = prefix + fieldName,
+                                    name = localizedName
+                                };
+
+                    fields.Add(field);
+                }
+            }
+
+            return fields;
+        }
+
         /// <summary>
         /// SaveContentField saves the content field
         /// </summary>
@@ -128,37 +207,46 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedDescriptions = new List<ContentTypeLocalization>();
             string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
 
-            return SaveEntity(contentFieldId, 
-                                () => new FieldDefinition
-                                                {
-                                                    ContentTypeId = contentType.ContentTypeId,
-                                                    DataTypeId = viewModel.DataTypeId,
-                                                    Label = defaultLabel,
-                                                    Name = defaultName,
-                                                    Description = defaultDescription,
-                                                    PortalId = portalId
-                                                },
+            return SaveEntity(contentFieldId,
+                /*CheckEntity*/ () => FieldDefinitionManager.Instance.GetFieldDefinitions(viewModel.ContentTypeId)
+                                                .SingleOrDefault((t => t.Name == defaultName)),
 
-                                contentField => FieldDefinitionManager.Instance.AddFieldDefinition(contentField),
+                /*ErrorMsg*/    LocalizeString("ContentFieldExists"),
 
-                                () => FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId),
+                /*CreateEntity*/() => new FieldDefinition()
+                                        {
+                                            ContentTypeId = contentType.ContentTypeId,
+                                            FieldTypeId = viewModel.FieldTypeId,
+                                            IsReferenceType = viewModel.IsReferenceType,
+                                            IsList = viewModel.IsList,
+                                            Label = defaultLabel,
+                                            Name = defaultName,
+                                            Description = defaultDescription,
+                                            PortalId = portalId
+                                        },
 
-                                contentField =>
-                                                {
-                                                    contentField.Name = defaultName;
-                                                    contentField.Description = defaultDescription;
-                                                    contentField.Label = defaultLabel;
-                                                    contentField.DataTypeId = viewModel.DataTypeId;
-                                                    FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
-                                                },
+                /*AddEntity*/   contentField => FieldDefinitionManager.Instance.AddFieldDefinition(contentField),
 
-                                (id) =>
-                                                {
-                                                    SaveContentLocalizations(localizedNames, FieldDefinitionManager.NameKey, id, portalId);
-                                                    SaveContentLocalizations(localizedLabels, FieldDefinitionManager.LabelKey, id, portalId);
-                                                    SaveContentLocalizations(localizedDescriptions, FieldDefinitionManager.DescriptionKey, id, portalId);
-                                                });
-                }
+                /*GetEntity*/   () => FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId),
+
+                /*UpdateEntity*/contentField =>
+                                        {
+                                            contentField.Name = defaultName;
+                                            contentField.Description = defaultDescription;
+                                            contentField.Label = defaultLabel;
+                                            contentField.FieldTypeId = viewModel.FieldTypeId;
+                                            contentField.IsReferenceType = viewModel.IsReferenceType;
+                                            contentField.IsList = viewModel.IsList;
+                                            FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
+                                        },
+
+                /*SaveLocal*/   id =>
+                                        {
+                                            SaveContentLocalizations(localizedNames, FieldDefinitionManager.NameKey, id, portalId);
+                                            SaveContentLocalizations(localizedLabels, FieldDefinitionManager.LabelKey, id, portalId);
+                                            SaveContentLocalizations(localizedDescriptions, FieldDefinitionManager.DescriptionKey, id, portalId);
+                                        });
+        }
 
         /// <summary>
         /// SaveContentType saves the content type
@@ -178,30 +266,37 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedDescriptions = new List<ContentTypeLocalization>();
             string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
 
-            return SaveEntity(contentTypeId, 
-                                () => new DynamicContentType
-                                                {
-                                                    Name = defaultName,
-                                                    Description = defaultDescription,
-                                                    PortalId = portalId
-                                                },
+            return SaveEntity(contentTypeId,
 
-                                contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
+                /*CheckEntity*/ () => DynamicContentTypeManager.Instance.GetContentTypes(portalId, true)
+                                                .SingleOrDefault((t => t.Name == defaultName)),
 
-                                () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
+                /*ErrorMsg*/    LocalizeString("ContentTypeExists"),
 
-                                contentType =>
-                                                {
-                                                    contentType.Name = defaultName;
-                                                    contentType.Description = defaultDescription;
-                                                    DynamicContentTypeManager.Instance.UpdateContentType(contentType);
-                                                },
+                /*CreateEntity*/() => new DynamicContentType
+                                            {
+                                                Name = defaultName,
+                                                Description = defaultDescription,
+                                                PortalId = portalId
+                                            },
 
-                                (id) =>
-                                                {
-                                                    SaveContentLocalizations(localizedNames, DynamicContentTypeManager.NameKey, id, portalId);
-                                                    SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.DescriptionKey, id, portalId);
-                                                });
+                /*AddEntity*/   contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
+
+                /*GetEntity*/   () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, portalId, true),
+
+                /*UpdateEntity*/contentType =>
+                                            {
+                                                contentType.Name = defaultName;
+                                                contentType.Description = defaultDescription;
+                                                DynamicContentTypeManager.Instance.UpdateContentType(contentType);
+                                            },
+
+                /*SaveLocal*/   id =>
+                                            {
+                                                SaveContentLocalizations(localizedNames, DynamicContentTypeManager.NameKey, id, portalId);
+                                                SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.DescriptionKey, id, portalId);
+                                            });
+
         }
     }
 }

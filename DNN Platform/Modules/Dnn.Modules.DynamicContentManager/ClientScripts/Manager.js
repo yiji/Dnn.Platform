@@ -10,17 +10,17 @@
 
         var listItem = $(target);
 
-        if(listItem.is("li") == false){
+        if(listItem.is("li") === false){
             listItem = listItem.closest('li');
         }
 
         listItem.addClass("selected");
 
+        $(panel).show();
+
         if (activePanel === panel) {
             return;
         }
-
-        $(panel).show();
 
         activePanel = panel;
     };
@@ -30,7 +30,7 @@
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
-        viewModel.templates.mode("listTypes");
+        viewModel.mode("listTypes");
     };
 
     var selectDataTypes = function (data, e) {
@@ -38,7 +38,7 @@
         viewModel.dataTypes.pageIndex(0);
         viewModel.dataTypes.searchText('');
         viewModel.dataTypes.getDataTypes();
-        viewModel.templates.mode("dataTypes");
+        viewModel.mode("dataTypes");
     };
 
     var selectTemplates = function (data, e) {
@@ -46,7 +46,7 @@
         viewModel.templates.pageIndex(0);
         viewModel.templates.searchText('');
         viewModel.templates.getTemplates();
-        viewModel.templates.mode("listTemplates");
+        viewModel.mode("listTemplates");
     };
 
     var selectSettings = function (data, e) {
@@ -58,7 +58,7 @@
 
         activePanel = settings.initialPanel;
 
-        var util = dcc.utility(settings, resx);
+        var util = dnn.utility(settings, resx);
 
         util.languageService = function(){
             util.sf.serviceController = "Language";
@@ -86,7 +86,8 @@
             util: util,
             $rootElement: $rootElement,
             mode: ko.observable("listTypes"),
-            codeEditor: codeEditor
+            codeEditor: codeEditor,
+            ko: ko
         };
 
         //Build the ViewModel
@@ -96,17 +97,39 @@
         viewModel.selectedLanguage = ko.observable('');
         viewModel.isLocalized = ko.observable(false);
 
+        util.languageService().get("GetEnabledLanguages", {},
+            function (data) {
+                if (typeof data !== "undefined" && data != null) {
+                    //Success
+                    for (var i = 0; i < data.results.length; i++) {
+                        var result = data.results[i];
+                        var language = { code: result.code, language: result.language };
+                        viewModel.languages.push(language);
+                    }
+                    viewModel.isLocalized(viewModel.languages().length > 1);
+                    viewModel.selectedLanguage(data.defaultLanguage);
+                    viewModel.defaultLanguage = data.defaultLanguage;
+                }
+            },
+            function () {
+                //Failure
+            }
+        );
+
         viewModel.mode = config.mode;
 
         //Wire up contentTypes subModel
-        viewModel.contentTypes = new dcc.contentTypesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.contentTypes = new dcc.contentTypesViewModel(viewModel, config);
         viewModel.contentTypes.init();
 
         //Wire up dataTypes subModel
-        viewModel.dataTypes = new dcc.dataTypesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.dataTypes = new dcc.dataTypesViewModel(viewModel, config);
         viewModel.dataTypes.init();
 
-        viewModel.templates = new dcc.templatesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.templates = new dcc.templatesViewModel(viewModel, config);
         viewModel.templates.init();
 
         viewModel.settings = dcc.settings(ko, resx, settings);
@@ -115,6 +138,13 @@
         viewModel.selectDataTypes = selectDataTypes;
         viewModel.selectTemplates = selectTemplates;
         viewModel.selectSettings = selectSettings;
+
+        viewModel.pageSizeOptions = ko.observableArray([
+                                { text: 10, value: 10 },
+                                { text: 25, value: 25 },
+                                { text: 50, value: 50 },
+                                { text: 100, value: 100 }
+        ]);
 
         viewModel.showCloseIcon = ko.computed(function() {
             var showIcon = false;
@@ -136,7 +166,7 @@
                     break;
                 case "editField":
                 case "editType":
-                    heading = resx.contentType + " - " + viewModel.contentTypes.selectedContentType.name()
+                    heading = resx.contentType + " - " + viewModel.contentTypes.selectedContentType.name();
                     break;
                 case "dataTypes":
                     heading = resx.dataTypes;
@@ -145,7 +175,7 @@
                     heading = resx.templates;
                     break;
                 case "editTemplate":
-                    heading = resx.template + " - " + viewModel.templates.selectedTemplate.name()
+                    heading = resx.template + " - " + viewModel.templates.selectedTemplate.name();
                     break;
             }
             return heading;
@@ -155,45 +185,30 @@
             switch(viewModel.mode()){
                 case "editField":
                 case "editType":
-                    viewModel.mode("listTypes");
-                    viewModel.contentTypes.refresh();
+                    viewModel.contentTypes.closeEdit();
                     break;
                 case "editTemplate":
-                    viewModel.mode("listTemplates");
-                    viewModel.templates.refresh();
+                    viewModel.templates.closeEdit();
                     break;
             }
         };
 
+        viewModel.fieldMessage = function(localizedValues) {
+            return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, viewModel.resx.defaultValueMissing, viewModel.resx.defaultLocalizedValueMissing, viewModel.resx.translationMissing);
+        };
+
+        viewModel.fieldStatus = function(localizedValues) {
+            return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, "dccError", "dccError", "dccWarning");
+        };
+
         ko.applyBindings(viewModel, $rootElement[0]);
 
-        viewModel.contentTypes.pageIndex(0);
-        viewModel.contentTypes.searchText('');
-        viewModel.contentTypes.getContentTypes();
-        $rootElement.find("#contentTypes-menu").addClass("selected");
-
+        if (activePanel === "#content-templates-panel") {
+            selectTemplates(null, { target: $rootElement.find("#contentTemplates-menu")[0] });
+        } else {
+            selectContentTypes(null, { target: $rootElement.find("#contentTypes-menu")[0] });
+        }
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
-
-        util.languageService().get("GetEnabledLanguages", {},
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var language = { code: result.code, language: result.language };
-                        viewModel.languages.push(language);
-                    }
-                    viewModel.isLocalized(viewModel.languages().length > 1);
-                    viewModel.selectedLanguage(data.data.defaultLanguage);
-                }
-                else {
-                    //Error
-                }
-            },
-            function(){
-                //Failure
-            }
-        );
     }
 
     return {

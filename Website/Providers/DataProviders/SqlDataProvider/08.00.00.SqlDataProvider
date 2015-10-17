@@ -87,11 +87,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID]
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'True/False', 1)
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Url', 6)
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Date', 7)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Time', 8)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'DateTime', 7)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Image', 2)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'File', 2)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Page', 2)
 GO
 
 /* DNN-6784 Allow developers to manage ContentFields */
@@ -412,7 +407,35 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration
 AS
 
 	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
-		
+GO
+
+/* DNN-7477: Extract Dashboard into a separate module. */
+/**************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+AS
+	SELECT		
+		DesktopModuleID, 
+		ModuleName,
+		FriendlyName,
+		Version,
+		(SELECT     COUNT(*) AS Instances
+			FROM          {databaseOwner}{objectQualifier}DesktopModules 
+				INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions ON {databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID 
+				INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID
+			WHERE      ({databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = DM.DesktopModuleID)) AS Instances
+	FROM {databaseOwner}{objectQualifier}DesktopModules AS DM
+	WHERE (IsAdmin = 0)
+	ORDER BY [FriendlyName] ASC
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

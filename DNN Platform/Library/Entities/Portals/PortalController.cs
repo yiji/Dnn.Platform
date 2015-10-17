@@ -58,6 +58,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 //using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
@@ -87,19 +88,9 @@ namespace DotNetNuke.Entities.Portals
 
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
-        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
-
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
-        }
-
-        public PortalController()
-        {
-            foreach (var handlers in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
-            {
-                PortalCreated += handlers.Value.PortalCreated;
-            }
         }
 
         #region Private Methods
@@ -405,10 +396,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(exc);
                     }
 
-                    if (PortalCreated != null)
-                    {
-                        PortalCreated(this, new PortalCreatedEventArgs { PortalId = portalId});
-                    }
+                    EventManager.Instance.OnPortalCreated(new PortalCreatedEventArgs { PortalId = portalId });
                 }
                 else
                 {
@@ -478,7 +466,7 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.HostSpace,
                                                                 Host.Host.PageQuota,
                                                                 Host.Host.UserQuota,
-                                                                Host.Host.SiteLogHistory,
+                                                                0, //site log history function has been removed.
                                                                 homeDirectory,
                                                                 cultureCode,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
@@ -857,7 +845,7 @@ namespace DotNetNuke.Entities.Portals
                     //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
                     using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
                     {
-                        var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
+                        var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
                         var userId = UserController.Instance.GetCurrentUserInfo().UserID;
                         file.FileId = fileManager.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
 					}
@@ -2026,7 +2014,7 @@ namespace DotNetNuke.Entities.Portals
                                             portal.Description,
                                             portal.KeyWords,
                                             portal.BackgroundFile,
-                                            portal.SiteLogHistory,
+                                            0, //site log history function has been removed.
                                             portal.SplashTabId,
                                             portal.HomeTabId,
                                             portal.LoginTabId,

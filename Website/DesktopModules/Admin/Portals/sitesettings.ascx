@@ -114,10 +114,6 @@
                         <dnn:label id="plFavIcon" runat="server" controlname="ctlFavIcon" />
                         <dnn:FilePickerUploader ID="ctlFavIcon" runat="server" Required="True" FileFilter="ico" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:label id="plSkinWidgestEnabled" runat="server" controlname="chkSkinWidgestEnabled" />
-                        <asp:CheckBox ID="chkSkinWidgestEnabled" runat="server" />
-                    </div>
                     <div id="siteSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalSkin" controlname="portalSkinCombo" runat="server" />
@@ -517,6 +513,30 @@
                             <dnn:label id="plAddCachebusterToResourceUris" runat="server" controlname="chkAddCachebusterToResourceUris" />
                             <asp:CheckBox runat="server" ID="chkAddCachebusterToResourceUris" />
                         </div>
+                    </fieldset>
+                    <h2 id="dnnSitePanel-OAuth" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("OAuthSite")%></a></h2>
+                    <fieldset>
+                        <div class="dnnFormItem" runat="server" id="OAuthStatus">
+                            <%=LocalizeString("OAuthNotEnabled")%>
+                            </div>
+                        
+                         <div class="dnnFormItem" runat="server" id="OAuthClient">
+                        <dnn:label id="plOAuthSitesettingsClient" runat="server" controlname="OAuthSitesettingsClientLabel" />
+                        <asp:Label runat="server" ID="OAuthSitesettingsClientLabel" />
+                    </div>
+			            <div class="dnnFormItem" runat="server" id="OAuthSecret">
+                        <dnn:label id="plOAuthSitesettingsSecret" runat="server" controlname="OAuthSitesettingsSecretLabel" />
+                        <asp:Label runat="server" ID="OAuthSitesettingsSecretLabel" />
+                            <div class="dnnFormItem psPageStateWarning dnnClear">
+                        <asp:Label ID="plOAuthWarning" runat="server" CssClass="dnnFormMessage dnnFormWarning"
+                            resourcekey="plOAuthWarning" Visible="false" />
+                    </div>
+
+                    </div>
+                        <ul class="dnnActions dnnClear">
+                            <li>
+                                <asp:LinkButton ID="cmdOAuth"  runat="server" CssClass="dnnPrimaryAction" /></li>
+                        </ul>
                     </fieldset>
                 </div>
             </div>

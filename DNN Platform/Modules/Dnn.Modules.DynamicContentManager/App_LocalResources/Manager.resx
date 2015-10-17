@@ -274,7 +274,7 @@
     <value>Showing {0}-{1} of {2} Templates</value>
   </data>
   <data name="SystemTemplate.Text" xml:space="preserve">
-    <value>GlobalTemplate</value>
+    <value>Global Template?</value>
   </data>
   <data name="TemplateFile.Text" xml:space="preserve">
     <value>Template File</value>
@@ -293,5 +293,68 @@
   </data>
   <data name="Actions.Text" xml:space="preserve">
     <value>Actions</value>
+  </data>
+  <data name="ContentTypeExists.Text" xml:space="preserve">
+    <value>A Content Type with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="InsertField.Text" xml:space="preserve">
+    <value>Insert Field</value>
+  </data>
+  <data name="InsertHelper.Text" xml:space="preserve">
+    <value>Insert Helper Tag</value>
+  </data>
+  <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
+    <value>The value of the field in the default language is required.</value>
+  </data>
+  <data name="InvalidContentTypeMessage.Text" xml:space="preserve">
+    <value>You must provide values for all fields for the default language.</value>
+  </data>
+  <data name="TranslationMissing.Text" xml:space="preserve">
+    <value>One or more translation is missing</value>
+  </data>
+  <data name="InvalidContentFieldMessage.Text" xml:space="preserve">
+    <value>You must provide values for all fields for the default language.</value>
+  </data>
+  <data name="InvalidDataTypeMessage.Text" xml:space="preserve">
+    <value>You must provide a value for the Data Type name in the default language</value>
+  </data>
+  <data name="InvalidTemplateMessage.Text" xml:space="preserve">
+    <value>You must provide a value for the Template name in the default language</value>
+  </data>
+  <data name="DefaultValueMissing.Text" xml:space="preserve">
+    <value>This value is required.</value>
+  </data>
+  <data name="ContentFieldExists.Text" xml:space="preserve">
+    <value>A Content Field with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="DataTypeExists.Text" xml:space="preserve">
+    <value>A Data Type with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="TemplateExists.Text" xml:space="preserve">
+    <value>A Template with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="DataTypesPageSize.Text" xml:space="preserve">
+    <value>Data Types per page</value>
+  </data>
+  <data name="ContentTypesPageSize.Text" xml:space="preserve">
+    <value>Content Types per page</value>
+  </data>
+  <data name="TemplatesPageSize.Text" xml:space="preserve">
+    <value>Templates per page</value>
+  </data>
+  <data name="FieldType.Text" xml:space="preserve">
+    <value>Field Type</value>
+  </data>
+  <data name="IsContentType.Text" xml:space="preserve">
+    <value>Content Type?</value>
+  </data>
+  <data name="IsEditTemplate.Text" xml:space="preserve">
+    <value>Edit Template?</value>
+  </data>
+    <data name="IsList.Text" xml:space="preserve">
+    <value>Is List?</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
   </data>
 </root>
