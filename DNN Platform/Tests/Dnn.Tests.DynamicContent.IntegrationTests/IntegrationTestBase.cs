@@ -47,6 +47,22 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 LastModifiedOnDate datetime NOT NULL DEFAULT getdate()
             )";
 
+        private const string CreateContentItemsTableSql = @"
+           CREATE TABLE ContentItems(
+	        [ContentItemID] [int] IDENTITY(1,1) NOT NULL,
+	        [Content] nvarchar (4000) NULL,
+	        [ContentTypeID] [int] NOT NULL,
+	        [TabID] [int] NOT NULL,
+	        [ModuleID] [int] NOT NULL,
+	        [ContentKey] nvarchar (250) NULL,
+	        [Indexed] [bit] NOT NULL,
+	        [CreatedByUserID] [int] NULL,
+	        [CreatedOnDate] [datetime] NULL,
+	        [LastModifiedByUserID] [int] NULL,
+	        [LastModifiedOnDate] [datetime] NULL,
+	        [StateID] [int] NULL
+        )";
+
         private const string CreateValidatorTypeTableSql = @"
             CREATE TABLE ContentTypes_ValidatorTypes(
 	            ValidatorTypeID int IDENTITY(1,1) NOT NULL,
@@ -151,12 +167,26 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTemplateTableSql);
+            DataUtil.ExecuteNonQuery(DatabaseName, CreateContentItemsTableSql);
         }
 
         public void TearDownInternal()
         {
             DataUtil.DeleteDatabase(DatabaseName);
             LogController.ClearInstance();
+        }
+
+        protected void SetUpContentTypes(int count, int portalId)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int isDynamic = 0;
+                if (i % 2 == 0)
+                {
+                    isDynamic = 1;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isDynamic, CreatedByUserId, LastModifiedByUserId));
+            }
         }
 
         protected void SetUpContentTypes(int count)
@@ -178,7 +208,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
+                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, 1, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
             }
         }
 

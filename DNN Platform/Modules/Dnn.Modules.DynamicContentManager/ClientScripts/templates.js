@@ -16,7 +16,7 @@ dcc.templatesViewModel = function (rootViewModel, config) {
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);
@@ -29,6 +29,12 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     var findTemplates = function () {
         self.pageIndex(0);
         self.getTemplates();
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.templatePageSize != self.pageSize()) {
+            persistentData.templatePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
     };
 
     var getContentTypes = function () {
@@ -48,28 +54,99 @@ dcc.templatesViewModel = function (rootViewModel, config) {
             );
     };
 
-    self.addTemplate = function () {
-        self.mode("editTemplate");
-        self.selectedTemplate.isEditMode(true);
-        self.selectedTemplate.init();
-        self.selectedTemplate.bindCodeEditor();
-    };
-
-    self.closeEdit = function() {
-        self.mode("listTemplates");
-        self.selectedTemplate.isEditMode(false);
-        self.refresh();
+    function slideToggle(element, direction, duration, callback) {
+        var elemToToggle = $rootElement.find(element);
+        if (direction === 'up') {
+            elemToToggle.stop(true, false).slideUp(duration, 'linear', function () { if (typeof callback === 'function') { callback();} });
+        } else {
+            elemToToggle.stop(true, false).slideDown(duration, 'linear', function () { if (typeof callback === 'function') { callback();} });
+        }
     }
 
-    self.editTemplate = function (data) {
+    function collapseDetailRow(callback) {
+        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
+
+        slideToggle('#templates-editrow > td > div', 'up', 400, function() {
+            $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            if (typeof callback === 'function') callback();
+        });
+    };
+
+    function findRow(e) {
+        var row = $rootElement.find(e.target);
+
+        if (row.is("tr") === false) {
+            row = row.closest('tr');
+        }
+
+        if (row.hasClass('in-edit-row')) {
+            row.removeClass('in-edit-row');
+            slideToggle('#templates-editrow > td > div', 'up', 600, function () {
+                $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            });
+            return null;
+        }
+
+        var tbody = row.parent();
+        $rootElement.find('tr', tbody).removeClass('in-edit-row');
+        row.addClass('in-edit-row');
+
+        return row;
+    }
+
+
+    self.addTemplate = function (event, ui) {
+        var tbody = $rootElement.find("#templates-addbody");
+        $(ui.target).fadeOut(200);
+
+        util.asyncParallel([
+            function (callback) {
+                self.selectedTemplate.init();
+                self.selectedTemplate.isEditMode(true);
+                self.selectedTemplate.bindCodeEditor();
+                self.mode("editTemplate");
+                callback();
+            },
+            function (callback) {
+                collapseDetailRow(callback);
+            }
+        ], function () {
+            $rootElement.find('#templates-editrow').appendTo(tbody);
+            slideToggle('#templates-editrow > td > div', 'down', 400);
+        });
+    };
+
+    self.closeEdit = function () {
+        self.mode("listTemplates");
+        collapseDetailRow(function() {
+            self.refresh();
+        });
+        self.selectedTemplate.isEditMode(false);
+    }
+
+    self.editTemplate = function (data, e) {
         self.selectedTemplate.init();
         self.selectedTemplate.isEditMode(true);
+
+        $rootElement.find('a.dccButton').fadeIn(200);
+
+        var row = findRow(e);
+
+        if (row === null) return;
+        
         util.asyncParallel([
-            function (cb1) {
-                self.getTemplate(data.templateId(), cb1);
+            function (callback) {
+                self.getTemplate(data.templateId(), callback);
+            },
+            function (callback) {
+                $rootElement.find('#templates-editrow > td > div').stop(true, false).slideUp(200, 'linear', function () {
+                    callback();
+                });
             }
         ], function () {
             self.mode("editTemplate");
+            $rootElement.find('#templates-editrow').insertAfter(row);
+            slideToggle('#templates-editrow > td > div', 'down', 400);
         });
     };
 
@@ -88,7 +165,14 @@ dcc.templatesViewModel = function (rootViewModel, config) {
         if (typeof cb === 'function') cb();
     };
 
+    function reAppendEditRow() {
+        $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+        $rootElement.find('#templates-editrow > td > div').hide();
+        $rootElement.find('a.dccButton').fadeIn(200);
+    }
+
     self.getTemplates = function () {
+        reAppendEditRow();
 
         getContentTypes();
 
@@ -118,6 +202,9 @@ dcc.templatesViewModel = function (rootViewModel, config) {
         self.pageSize.subscribe(function () {
             findTemplates();
         });
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.templatePageSize);
         $rootElement.find("#templates-editView").css("display", "none");
     };
 
@@ -132,7 +219,8 @@ dcc.templateViewModel = function (parentViewModel, config) {
     var resx = config.resx;
     var codeEditor = config.codeEditor;
     var ko = config.ko;
-
+    var invalidCharsRegEx = /[|"<>]/g;
+    var replacementCharsRegEx = /[\s|"<>/]/g;
     var $rootElement = config.$rootElement;
     var $contextMenu = $rootElement.find("#templateEditorContextMenu");
 
@@ -169,7 +257,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
 
     self.name.subscribe(function (newValue) {
         if (self.filePath() === "" && newValue !== "") {
-            self.filePath("Content Templates/" + newValue.replace(/\s/g, "") + ".cshtml");
+            self.filePath("Content Templates/" + newValue.replace(replacementCharsRegEx, "") + ".cshtml");
         }
     });
 
@@ -353,10 +441,26 @@ dcc.templateViewModel = function (parentViewModel, config) {
         return value;
     });
 
-    var validate = function () {
-        return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames());
+    var validate = function (data) {
+        var jsObject = ko.toJS(data);
+        if (invalidCharsRegEx.test(jsObject.filePath)) {
+            return {
+                isValid: false,
+                validationErrorMessage: resx.invalidCharsMessage
+            }; //File path contains invalid characters
+        }
+        if (!util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames())) {
+            return {
+                isValid: false,
+                validationErrorMessage: resx.invalidTemplateMessage
+            };
+        }
+        return {
+            isValid: true,
+            validationErrorMessage: ''
+        };
     };
-
+    
     self.bindCodeEditor = function () {
         configureContextMenu();
         codeEditor.setValue(self.content());
@@ -432,8 +536,9 @@ dcc.templateViewModel = function (parentViewModel, config) {
     };
 
     self.saveTemplate = function (data) {
-        if (!validate()) {
-            util.alert(resx.invalidTemplateMessage, resx.ok);
+        var validationData = validate(data);
+        if (!validationData.isValid) {
+            util.alert(validationData.validationErrorMessage, resx.ok);
 
         }
         else {
@@ -449,14 +554,14 @@ dcc.templateViewModel = function (parentViewModel, config) {
             };
 
             util.templateService().post("SaveTemplate", params,
-            function () {
-                self.cancel();
-            },
-            function (xhr, status, err) {
-                //Failure
-                util.alert(status + ":" + err, resx.ok);
-            }
-                );
+                function () {
+                    self.cancel();
+                },
+                function (xhr, status, err) {
+                    //Failure
+                    util.handleServiceError(xhr, status, err);
+                }
+            );
         }
     };
 

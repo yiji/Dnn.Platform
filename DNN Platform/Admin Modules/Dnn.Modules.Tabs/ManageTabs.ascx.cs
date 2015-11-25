@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -67,14 +68,13 @@ namespace Dnn.Modules.Tabs
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///   and localisation
-    /// </history>
     public partial class ManageTabs : PortalModuleBase
     {
         private TabInfo _tab;
         private string _strAction = "";
+
+        private dynamic contentLocalizationControl;
+        private const string ContentLocalizationControlPath = @"~/DesktopModules/Admin/Languages/CLControl.ascx";
 
         #region Protected Properties
 
@@ -234,6 +234,20 @@ namespace Dnn.Modules.Tabs
 
         }
 
+        private void LoadContentLocalizationControl()
+        {
+            if (IsLanguageModuleInstalled())
+            {
+                contentLocalizationControl = LoadControl(ContentLocalizationControlPath);
+                localizationControlRow.Controls.Add(contentLocalizationControl);
+            }
+        }
+
+        private bool IsLanguageModuleInstalled()
+        {
+            return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
+        }
+
         protected void BindCLControl()
         {
             if (!localizationPanel.Visible)
@@ -247,7 +261,7 @@ namespace Dnn.Modules.Tabs
             AddMissing.Visible = false;
             if (String.IsNullOrEmpty(_tab.CultureCode))
             {
-                CLControl1.Visible = false;
+                contentLocalizationControl.Visible = false;
                 if (!(string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy"))
                 {
                     MakeTranslatable.Visible = true;
@@ -255,9 +269,9 @@ namespace Dnn.Modules.Tabs
             }
             else
             {
-                CLControl1.Visible = true;
-                CLControl1.enablePageEdit = true;
-                CLControl1.BindAll(_tab.TabID);
+                contentLocalizationControl.Visible = true;
+                contentLocalizationControl.enablePageEdit = true;
+                contentLocalizationControl.BindAll(_tab.TabID);
                 cmdUpdateLocalization.Visible = true;
 
                 // only show "Convert to neutral" if page has no child pages
@@ -487,7 +501,8 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ContentLocalizationEnabled 
                 && LocaleController.Instance.GetLocales(PortalId).Count > 1
                 && _tab.TabID != PortalSettings.AdminTabId
-                && _tab.ParentId != PortalSettings.AdminTabId)
+                && _tab.ParentId != PortalSettings.AdminTabId
+                && contentLocalizationControl != null)
             {
                 localizationTab.Visible = true;
                 localizationPanel.Visible = true;
@@ -643,18 +658,16 @@ namespace Dnn.Modules.Tabs
         /// <summary>
         ///   Checks if parent tab will cause a circular reference
         /// </summary>
-        /// <param name = "intTabId">Tabid</param>
+        /// <param name = "tabId">Tab id.</param>
+        /// <param name = "portalId">portal id.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [VMasanas]	28/11/2004	Created
-        /// </history>
-        private bool IsCircularReference(int intTabId, int portalId)
+        private bool IsCircularReference(int tabId, int portalId)
         {
-            if (intTabId != -1)
+            if (tabId != -1)
             {
-                var tabInfo = TabController.Instance.GetTab(intTabId, portalId, false);
+                var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
 
                 if (tabInfo.Level == 0)
                 {
@@ -665,11 +678,11 @@ namespace Dnn.Modules.Tabs
             return false;
         }
 
-        private List<ModuleInfo> LoadTabModules(int TabID)
+        private List<ModuleInfo> LoadTabModules(int tabId)
         {
             var moduleList = new List<ModuleInfo>();
 
-            foreach (var m in ModuleController.Instance.GetTabModules(TabID).Values)
+            foreach (var m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 if (TabPermissionController.CanAddContentToPage() && !m.IsDeleted && !m.AllTabs)
                 {
@@ -721,11 +734,6 @@ namespace Dnn.Modules.Tabs
         /// <remarks>
         /// </remarks>
         /// <param name = "strAction">The action to perform "edit" or "add"</param>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [jlucarino]	2/26/2009	Added CreatedByUserID and LastModifiedByUserID
-        /// </history>
         private int SaveTabData(string strAction)
         {
             string strIcon = ctlIcon.Url;
@@ -1423,14 +1431,16 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ActiveTab.IsSuperTab || PortalSecurity.IsInRole("Administrators") || PortalSettings.ActiveTab.ParentId == Null.NullInteger)
             {
                 // Add Non Specified if user is Admin or if current tab is already on the top level
-                cboParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                cboParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
             }
 
-            cboCopyPage.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            cboCopyPage.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
             PortalAliasCaption.Text = PortalAlias.HTTPAlias;
             PortalAliasCaption.ToolTip = PortalAlias.HTTPAlias;
             UrlContainer.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "um-page-url-container");
+
+            LoadContentLocalizationControl();
         }
 
         private void DisableHostAdminFunctions()
@@ -1716,11 +1726,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [VMasanas]  30/09/2004  When a parent tab is deleted all child are also marked as deleted.
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(object Sender, EventArgs e)
         {
@@ -1800,13 +1805,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   [aprasad]	3/21/2011	DNN-14685. Modified Redirect behavior after Save. Stays to the same page
-        ///                         if more than one langugae is present, else redirects to the updated/new page
-        ///   and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object Sender, EventArgs e)
         {
             try
@@ -1963,7 +1961,10 @@ namespace Dnn.Modules.Tabs
 
         protected void cmdUpdateLocalization_Click(object sender, EventArgs e)
         {
-            CLControl1.SaveData();
+            if (contentLocalizationControl != null)
+            {
+                contentLocalizationControl.SaveData();
+            }
 
             var returnPath = Globals.NavigateURL();
 

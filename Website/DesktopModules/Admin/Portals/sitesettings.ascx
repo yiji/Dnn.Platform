@@ -2,6 +2,7 @@
     AutoEventWireup="false" EnableViewState="True" Codebehind="SiteSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Audit" Src="~/controls/ModuleAuditControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="FilePickerUploader" Src="~/controls/filepickeruploader.ascx" %>
@@ -306,8 +307,8 @@
                         <div class="dnnFormItem">
                             <dnn:label id="plSMTPMode" controlname="rblSMTPmode" runat="server" />
                              <asp:RadioButtonList ID="rblSMTPmode" runat="server" AutoPostBack="true" RepeatDirection="Horizontal">
-                                    <asp:ListItem Value="h">Host</asp:ListItem>
-                                    <asp:ListItem Value="p">Portal</asp:ListItem>
+                                    <asp:ListItem Value="h" resourcekey="Host">Host</asp:ListItem>
+                                    <asp:ListItem Value="p" resourcekey="Site">Site</asp:ListItem>
                              </asp:RadioButtonList>
                         </div>
                         <div runat="server" id="SmtpSettings">
