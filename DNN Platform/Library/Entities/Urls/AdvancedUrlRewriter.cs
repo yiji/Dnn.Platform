@@ -159,7 +159,8 @@ namespace DotNetNuke.Entities.Urls
             foreach (string regexPattern in portalRegexes.Keys)
             {
                 //split out the portal alias from the regex pattern representing that alias
-                Match aliasMatch = Regex.Match(requestUrl, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var regex = RegexUtils.GetCachedRegex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var aliasMatch = regex.Match(requestUrl);
                 if (aliasMatch.Success)
                 {
                     //check for mobile browser and matching
@@ -553,9 +554,10 @@ namespace DotNetNuke.Entities.Urls
                                                 // add a refresh header to the response 
                                                 response.AddHeader("Refresh", "0;URL=" + result.FinalUrl);
                                                 // add the clientside javascript redirection script
+                                                var finalUrl = HttpUtility.HtmlEncode(result.FinalUrl);
                                                 response.Write("<html><head><title></title>");
-                                                response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + result.FinalUrl + @""")</script> -->");
-                                                response.Write("</head><body><div><a href='" + result.FinalUrl + "'>" + result.FinalUrl + "</a></div></body></html>");
+                                                response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + finalUrl + @""")</script> -->");
+                                                response.Write("</head><body><div><a href='" + finalUrl + "'>" + finalUrl + "</a></div></body></html>");
                                                 if (showDebug)
                                                 {
                                                     /*
