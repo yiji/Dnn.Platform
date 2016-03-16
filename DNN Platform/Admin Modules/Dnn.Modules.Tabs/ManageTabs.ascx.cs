@@ -1005,9 +1005,26 @@ namespace Dnn.Modules.Tabs
                                 {
                                     newModule.ModuleID = Null.NullInteger;
                                     ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
+                                    newModule.InheritViewPermissions = objModule.InheritViewPermissions;
                                 }
 
                                 newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
+
+                                //copy permissions from source module
+                                foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
+                                {
+                                    newModule.ModulePermissions.Add(new ModulePermissionInfo
+                                    {
+                                        ModuleID = newModule.ModuleID,
+                                        PermissionID = permission.PermissionID,
+                                        RoleID = permission.RoleID,
+                                        UserID = permission.UserID,
+                                        PermissionKey = permission.PermissionKey,
+                                        AllowAccess = permission.AllowAccess
+                                    }, true);
+                                }
+
+                                ModulePermissionController.SaveModulePermissions(newModule);
 
                                 if (optCopy.Checked)
                                 {
@@ -1294,12 +1311,14 @@ namespace Dnn.Modules.Tabs
             if (rblCacheIncludeExclude.SelectedValue == "0")
             {
                 ExcludeVaryByRow.Visible = false;
+                txtExcludeVaryBy.Text = string.Empty;
                 IncludeVaryByRow.Visible = true;
             }
             else
             {
                 ExcludeVaryByRow.Visible = true;
                 IncludeVaryByRow.Visible = false;
+                txtIncludeVaryBy.Text = string.Empty;
             }
         }
 

@@ -712,7 +712,7 @@ namespace DotNetNuke.Entities.Modules
                 if (dr.Read())
                 {
 					settingExist = true;
-	                existValue = dr.GetString(0);
+	                existValue = dr.GetString(1);
                 }
 
 				dr.Close();
@@ -832,6 +832,20 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 ClearCache(moduleInfo.TabID);
+            }
+        }
+
+        /// <summary>
+        /// Update content item when the module title changed.
+        /// </summary>
+        /// <param name="module"></param>
+        private void UpdateContentItem(ModuleInfo module)
+        {
+            IContentController contentController = Util.GetContentController();
+            if (module.Content != module.ModuleTitle)
+            {
+                module.Content = module.ModuleTitle;
+                contentController.UpdateContentItem(module);
             }
         }
 
@@ -1570,6 +1584,26 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
+        /// Gets the modules by DesktopModuleId.
+        /// </summary>
+        /// <param name="desktopModuleId">The Desktop Module Id.</param>
+        /// <returns>module collection</returns>
+        public ArrayList GetModulesByDesktopModuleId(int desktopModuleId)
+        {
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId);
+            var modules = new ArrayList();
+            foreach (var moduleDefinition in moduleDefinitions)
+            {
+                var portals = PortalController.Instance.GetPortals();
+                foreach (PortalInfo portal in portals)
+                {
+                    modules.AddRange(GetModulesByDefinition(portal.PortalID, moduleDefinition.Value.DefinitionName));
+                }
+            }
+            return modules;
+        }
+
+        /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable
         /// either by inheriting from ModuleSearchBase or implementing the older ISearchable interface.
         /// </summary>
@@ -1774,9 +1808,16 @@ namespace DotNetNuke.Entities.Modules
         public void UpdateModule(ModuleInfo module)
         {
             //Update ContentItem If neccessary
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            if (module.ModuleID != Null.NullInteger)
             {
-                CreateContentItem(module);
+                if (module.ContentItemId == Null.NullInteger)
+                {
+                    CreateContentItem(module);
+                }
+                else
+                {
+                    UpdateContentItem(module);
+                }
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();

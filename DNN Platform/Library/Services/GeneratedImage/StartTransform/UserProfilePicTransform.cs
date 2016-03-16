@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -70,9 +71,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public Bitmap GetNoAvatarImage()
         {
             var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
-            using (var temp = new Bitmap(avatarAbsolutePath))
+            using (var content = File.OpenRead(avatarAbsolutePath))
             {
-                return new Bitmap(temp);
+                return CopyImage(content);
             }
         }
 
@@ -99,24 +100,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
 
             var user = UserController.Instance.GetCurrentUserInfo();
-            var isVisible = user.UserID == targetUser.UserID;
-            if (!isVisible)
-            {
-                switch (photoProperty.ProfileVisibility.VisibilityMode)
-                {
-                    case UserVisibilityMode.AllUsers:
-                        isVisible = true;
-                        break;
-                    case UserVisibilityMode.MembersOnly:
-                        isVisible = user.UserID > 0;
-                        break;
-                    case UserVisibilityMode.AdminOnly:
-                        isVisible = user.IsInRole(settings.AdministratorRoleName);
-                        break;
-                    case UserVisibilityMode.FriendsAndGroups:
-                        break;
-                }
-            }
+            var isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
 
             if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
             {
@@ -143,23 +127,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
-        }
-
-        private Image CopyImage(Stream imgStream)
-        {
-            using (Image srcImage = new Bitmap(imgStream))
-            {
-                Image destImage = new Bitmap(srcImage.Width, srcImage.Height, srcImage.PixelFormat);
-                using (Graphics graph = Graphics.FromImage(destImage))
-                {
-                    graph.CompositingMode = CompositingMode.SourceCopy;
-                    graph.CompositingQuality = CompositingQuality;
-                    graph.InterpolationMode = InterpolationMode;
-                    graph.SmoothingMode = SmoothingMode;
-                    graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
-                }
-                return destImage;
-            }
         }
     }
 }

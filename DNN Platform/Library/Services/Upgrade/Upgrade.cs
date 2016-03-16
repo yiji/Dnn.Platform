@@ -3214,19 +3214,69 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var nt = NotificationsController.Instance.GetNotificationType(name);
 
-                var actions = NotificationsController.Instance.GetNotificationTypeActions(nt.NotificationTypeId).ToList();
-
-                if (actions.Any())
+                if (nt != null)
                 {
+                    var actions = NotificationsController.Instance.GetNotificationTypeActions(nt.NotificationTypeId).ToList();
 
-                    foreach (var action in actions)
+                    if (actions.Any())
                     {
-                        action.APICall = action.APICall.Replace(".ashx", "");
-                        NotificationsController.Instance.DeleteNotificationTypeAction(action.NotificationTypeActionId);
-                    }
 
-                    NotificationsController.Instance.SetNotificationTypeActions(actions, nt.NotificationTypeId);
+                        foreach (var action in actions)
+                        {
+                            action.APICall = action.APICall.Replace(".ashx", "");
+                            NotificationsController.Instance.DeleteNotificationTypeAction(
+                                action.NotificationTypeActionId);
+                        }
+
+                        NotificationsController.Instance.SetNotificationTypeActions(actions, nt.NotificationTypeId);
+                    }
                 }
+                else
+                {
+                    AddMissingNotificationTypes(name);
+                }
+            }
+        }
+
+        private static void AddMissingNotificationTypes(string notificationTypeName)
+        {
+            switch (notificationTypeName)
+            {
+                case "FriendRequest":
+                    var friendRequestType = new NotificationType { Name = notificationTypeName, Description = "Friend Request" };
+                    var friendRequestTypeActions = new List<NotificationTypeAction>();
+                    friendRequestTypeActions.Add(new NotificationTypeAction
+                    {
+                        NameResourceKey = "Accept",
+                        DescriptionResourceKey = "AcceptFriend",
+                        APICall = "DesktopModules/InternalServices/API/RelationshipService/AcceptFriend"
+                    });
+                    NotificationsController.Instance.CreateNotificationType(friendRequestType);
+                    NotificationsController.Instance.SetNotificationTypeActions(friendRequestTypeActions, friendRequestType.NotificationTypeId);
+                    break;
+                case "FollowerRequest":
+                    var followerRequestType = new NotificationType { Name = notificationTypeName, Description = "Follower Request" };
+                    NotificationsController.Instance.CreateNotificationType(followerRequestType);
+                    break;
+                case "FollowBackRequest":
+                    var followBackRequestType = new NotificationType { Name = notificationTypeName, Description = "Follow Back Request" };
+                    var followBackRequestTypeActions = new List<NotificationTypeAction>();
+                    followBackRequestTypeActions.Add(new NotificationTypeAction
+                    {
+                        NameResourceKey = "FollowBack",
+                        DescriptionResourceKey = "FollowBack",
+                        ConfirmResourceKey = "",
+                        APICall = "DesktopModules/InternalServices/API/RelationshipService/FollowBack"
+                    });
+                    NotificationsController.Instance.CreateNotificationType(followBackRequestType);
+                    NotificationsController.Instance.SetNotificationTypeActions(followBackRequestTypeActions, followBackRequestType.NotificationTypeId);
+                    break;
+                case "TranslationSubmitted":
+                    var translationSubmittedType = new NotificationType { Name = notificationTypeName, Description = "Translation Submitted" };
+                    NotificationsController.Instance.CreateNotificationType(translationSubmittedType);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -5116,7 +5166,7 @@ namespace DotNetNuke.Services.Upgrade
             string exceptions = "";
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + Globals.FormatVersion(version));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
             }
             try
             {
@@ -5513,8 +5563,13 @@ namespace DotNetNuke.Services.Upgrade
             var versions = new List<Version>();
             foreach (string scriptFile in GetUpgradeScripts(providerPath, dataBaseVersion))
             {
-                versions.Add(new Version(GetFileNameWithoutExtension(scriptFile)));
-                UpgradeVersion(scriptFile, true);
+                var version = new Version(GetFileNameWithoutExtension(scriptFile));
+                bool scriptExecuted;
+                UpgradeVersion(scriptFile, true, out scriptExecuted);
+                if (scriptExecuted)
+                {
+                    versions.Add(version);
+                }
             }
             
             foreach (Version ver in versions)
@@ -5637,15 +5692,33 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback)
         {
+            bool scriptExecuted;
+            return UpgradeVersion(scriptFile, writeFeedback, out scriptExecuted);
+        }
+
+        ///-----------------------------------------------------------------------------
+        ///<summary>
+        ///  UpgradeVersion upgrades a single version
+        ///</summary>
+        ///<remarks>
+        ///</remarks>
+        ///<param name="scriptFile">The upgrade script file</param>
+        ///<param name="writeFeedback">Write status to Response Stream?</param>
+        /// <param name="scriptExecuted">Identity whether the script file executed.</param>
+        ///-----------------------------------------------------------------------------
+        public static string UpgradeVersion(string scriptFile, bool writeFeedback, out bool scriptExecuted)
+        {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
             var version = new Version(GetFileNameWithoutExtension(scriptFile));
             string exceptions = Null.NullString;
+            scriptExecuted = false;
 
             // verify script has not already been run
             if (!Globals.FindDatabaseVersion(version.Major, version.Minor, version.Build))
             {
                 // execute script file (and version upgrades) for version
                 exceptions = ExecuteScript(scriptFile, writeFeedback);
+                scriptExecuted = true;
 
                 // update the version
                 Globals.UpdateDataBaseVersion(version);
@@ -5672,7 +5745,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // execute script file (and version upgrades) for version
                 exceptions = ExecuteScript(scriptFile, writeFeedback);
-                    
+                scriptExecuted = true;
+
                 // update the increment
                 Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
 

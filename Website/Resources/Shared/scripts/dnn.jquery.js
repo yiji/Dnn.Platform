@@ -584,10 +584,7 @@
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
                     label.click(function (e) {
-                        $ch.triggerHandler('focus');
-                        ch.click();
-                        $ch.trigger('change', [e]);
-                        cb(e);
+                        clickHandler(e);
                         return false;
                     });
                 }
@@ -597,23 +594,29 @@
                         if ($this.is('input')) return;
 
                         $this.click(function (e) {
-                            $ch.triggerHandler('focus');
-                            ch.click();
-                            $ch.trigger('change', [e]);
-                            cb(e);
+                            clickHandler(e);
                             return false;
                         });
                     });
                 }
             }
+
             if (!parentLabel) {
                 ch.wrapper.click(function (e) {
-                    $ch.triggerHandler('focus');
-                    ch.click();
-                    $ch.trigger('change', [e]);
-                    cb(e);
+                    clickHandler(e);
                     return false;
                 });
+            }
+
+            function clickHandler(e) {
+                $ch.triggerHandler('focus');
+                var previousChecked = ch.checked;
+                ch.click();
+                if (ch.checked == previousChecked && ch.type == 'checkbox') {
+                    ch.checked = !ch.checked;  //Fix for Firefox browser
+                }
+                $ch.trigger('change', [e]);
+                cb(e);
             }
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
@@ -2046,7 +2049,8 @@
 								for(var i = 0; i < tags.length; i++){
 									$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
 								}
-							}
+                            }
+                            $(event.data.fake_input).dnnResetAutosize(settings);
                         }
 
                         return false;

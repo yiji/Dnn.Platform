@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Text;
 using System.Web.Mvc;
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
@@ -101,5 +102,23 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 ViewEngineCollection = ViewEngineCollection
             };
         }
+
+        protected override PartialViewResult PartialView(string viewName, object model)
+        {
+            if (model != null)
+            {
+                ViewData.Model = model;
+            }
+
+            return new DnnPartialViewResult
+            {
+                ViewName = viewName,
+                ViewData = ViewData,
+                TempData = TempData,
+                ViewEngineCollection = ViewEngineCollection
+            };
+        }
+
+        public ViewEngineCollection ViewEngineCollectionEx { get; set; }
     }
 }

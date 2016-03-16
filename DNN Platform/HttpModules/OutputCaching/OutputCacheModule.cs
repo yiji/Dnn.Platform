@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
@@ -69,8 +69,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
-            if ((_app == null) || (_app.Context == null) || (_app.Context.Items == null) || _app.Response.ContentType.ToLower() != "text/html" || _app.Context.Request.IsAuthenticated ||
-                HttpContext.Current.Request.Browser.Crawler)
+            if (_app == null || _app.Context == null || _app.Response.ContentType.ToLower() != "text/html" || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
             {
                 return;
             }
@@ -140,15 +139,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 {
                     if (includeVaryByKeysSettings.Contains(","))
                     {
-                        string[] keys = includeVaryByKeysSettings.Split(char.Parse(","));
+                        string[] keys = includeVaryByKeysSettings.Split(',');
                         foreach (string key in keys)
                         {
-                            includeVaryByKeys.Add(key.Trim().ToLower());
+                            includeVaryByKeys.Add(key.Trim().ToLowerInvariant());
                         }
                     }
                     else
                     {
-                        includeVaryByKeys.Add(includeVaryByKeysSettings.Trim().ToLower());
+                        includeVaryByKeys.Add(includeVaryByKeysSettings.Trim().ToLowerInvariant());
                     }
                 }
             }
@@ -165,15 +164,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 {
                     if (excludeVaryByKeysSettings.Contains(","))
                     {
-                        string[] keys = excludeVaryByKeysSettings.Split(char.Parse(","));
+                        string[] keys = excludeVaryByKeysSettings.Split(',');
                         foreach (string key in keys)
                         {
-                            excludeVaryByKeys.Add(key.Trim().ToLower());
+                            excludeVaryByKeys.Add(key.Trim().ToLowerInvariant());
                         }
                     }
                     else
                     {
-                        excludeVaryByKeys.Add(excludeVaryByKeysSettings.Trim().ToLower());
+                        excludeVaryByKeys.Add(excludeVaryByKeysSettings.Trim().ToLowerInvariant());
                     }
                 }
             }
@@ -183,7 +182,16 @@ namespace DotNetNuke.HttpModules.OutputCaching
             foreach (string key in _app.Context.Request.QueryString)
             {
                 if (key != null && _app.Context.Request.QueryString[key] != null)
-                    varyBy.Add(key.ToLower(), _app.Context.Request.QueryString[key]);
+                {
+                    var varyKey = key.ToLowerInvariant();
+                    varyBy.Add(varyKey, _app.Context.Request.QueryString[key]);
+
+                    if (includeExclude == IncludeExcludeType.IncludeByDefault && !includeVaryByKeys.Contains(varyKey))
+                    {
+                        includeVaryByKeys.Add(varyKey);
+                    }
+                }
+                
             }
             if (! (varyBy.ContainsKey("portalid")))
             {
@@ -249,7 +257,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         {
             if (! HttpContext.Current.Request.Browser.Crawler)
             {
-                var responseFilter = (OutputCacheResponseFilter) (_app.Context.Items[ContextKeyResponseFilter]);
+                var responseFilter = _app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
                 if (responseFilter != null)
                 {
                     responseFilter.StopFiltering(Convert.ToInt32(_app.Context.Items[ContextKeyTabId]), false);

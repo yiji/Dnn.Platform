@@ -849,7 +849,12 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("DeleteTabVersionDetail", tabVersionDetailId);
 		}
 
-		public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
+	    public virtual void DeleteTabVersionDetailByModule(int moduleId)
+	    {
+            ExecuteNonQuery("DeleteTabVersionDetailByModule", moduleId);
+        }
+
+        public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
 		{
 			ExecuteNonQuery("DeleteTranslatedTabs", tabId, cultureCode);
 		}
@@ -1671,7 +1676,12 @@ namespace DotNetNuke.Data
 											GetNull(contentItemId));
 		}
 
-		public virtual int CountLegacyFiles()
+	    public virtual void SetFileHasBeenPublished(int fileId, bool hasBeenPublished)
+	    {
+            ExecuteNonQuery("SetFileHasBeenPublished", fileId, hasBeenPublished);
+        }
+        
+        public virtual int CountLegacyFiles()
 		{
 			return ExecuteScalar<int>("CountLegacyFiles");
 		}
@@ -2272,7 +2282,12 @@ namespace DotNetNuke.Data
 			return ExecuteReader("GetUserByVanityUrl", GetNull(portalId), vanityUrl);
 		}
 
-		public virtual IDataReader GetDisplayNameForUser(int userId, string spaceReplacement)
+        public virtual IDataReader GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            return ExecuteReader("GetUserByPasswordResetToken", GetNull(portalId), resetToken);
+        }
+
+        public virtual IDataReader GetDisplayNameForUser(int userId, string spaceReplacement)
 		{
 			return ExecuteReader("GetDisplayNameForUser", userId, spaceReplacement);
 		}
@@ -3175,6 +3190,11 @@ namespace DotNetNuke.Data
 		public virtual void RemovePortalLocalization(int portalID, string CultureCode)
 		{
 			ExecuteNonQuery("RemovePortalLocalization", portalID, CultureCode);
+		}
+
+		public virtual IDataReader GetPortalLocalizations(int portalID)
+		{
+            return ExecuteReader("GetPortalLocalizations", portalID);
 		}
 
 		public virtual IDataReader GetLanguages()

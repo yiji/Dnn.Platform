@@ -181,12 +181,16 @@ namespace DotNetNuke.Web.Mvc
                 ModuleActions = LoadActions(_result);
 
                 httpContext.SetModuleRequestResult(_result);
+
+                //if (_result != null)
+                //{
+                //    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
+                //}
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -205,6 +209,7 @@ namespace DotNetNuke.Web.Mvc
 
             base.OnLoad(e);
         }
+
 
         private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
         {

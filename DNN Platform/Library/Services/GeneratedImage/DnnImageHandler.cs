@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Set default settings here
             EnableClientCache = true;
             EnableServerCache = true;
-            AllowStandalone = false;
+            AllowStandalone = true;
             LogSecurity = false;
             EnableIPCount = false;
             ImageCompression = 95;
@@ -158,21 +158,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (mode)
                 {
                     case "profilepic":
+                        int uid;
+                        if (!int.TryParse(parameters["userid"], out uid) || uid <= 0)
+                        {
+                            uid = -1;
+                        }
                         var uppTrans = new UserProfilePicTransform
                         {
-                            UserID = string.IsNullOrEmpty(parameters["userid"])
-                                ? -1
-                                : Convert.ToInt32(parameters["userid"])
+                            UserID = uid
                         };
+
                         IFileInfo photoFile;
-                        if (!uppTrans.TryGetPhotoFile(out photoFile))
-                        {
-                            var noAvatar = uppTrans.GetNoAvatarImage();
-                            return new ImageInfo(noAvatar)
-                            {
-                                IsEmptyImage = true
-                            };
-                        }
+                        ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
+                            ? ImageFormat.Gif
+                            : GetImageFormat(photoFile?.Extension ?? "jpg");
+
                         ImageTransforms.Add(uppTrans);
                         break;
 
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if (!string.IsNullOrEmpty(parameters["w"]) && !string.IsNullOrEmpty(parameters["h"]) && width != height)
+                    if (width>0 && height>0 && width != height)
                     {
                         resizeMode = ImageResizeMode.Fill;
                     }
@@ -432,10 +432,10 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // We start the chain with an empty image
-            var dummy = new Bitmap(1, 1, PixelFormat.Format24bppRgb);
+            var dummy = new Bitmap(1, 1);
             using (var ms = new MemoryStream())
             {
-                dummy.Save(ms, ImageFormat.Jpeg);
+                dummy.Save(ms, ContentType);
                 return new ImageInfo(ms.ToArray());
             }
         }

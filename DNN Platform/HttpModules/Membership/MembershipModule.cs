@@ -26,7 +26,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -90,6 +90,7 @@ namespace DotNetNuke.HttpModules.Membership
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
+            application.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
         /// <summary>
@@ -106,6 +107,31 @@ namespace DotNetNuke.HttpModules.Membership
             var application = (HttpApplication) sender;
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
+
+        //DNN-6973: if the authentication cookie set by cookie slide in membership,
+        //then use SignIn method instead if current portal is in portal group.
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
+                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
+            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
+            {
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                if (isInPortalGroup)
+                {
+                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
+                    {
+                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                        new PortalSecurity().SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Called when unverified user skin initialize.
@@ -139,45 +165,15 @@ namespace DotNetNuke.HttpModules.Membership
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");
-            if(!string.IsNullOrEmpty(auth))
+            if (!string.IsNullOrEmpty(auth))
             {
-                if(auth.StartsWith("Negotiate"))
+                if (auth.StartsWith("Negotiate"))
                 {
                     isActiveDirectoryAuthHeaderPresent = true;
                 }
             }
 
-            //DNN-6673 START
-            //check if it's Windows Authentication request, and try to authenticate it
-            if (request.IsAuthenticated
-                && context.User != null
-                && portalSettings != null
-                && (context.User is WindowsPrincipal || isActiveDirectoryAuthHeaderPresent))
-            {
-                string userName = string.Empty;
-                //get WinAuth username from context 
-                if (context.User != null && context.User.Identity != null)
-                {
-                    userName = NameRegex.Replace(context.User.Identity.Name, string.Empty);
-                }
-
-                UserInfo userInfo = UserController.GetCachedUser(portalSettings.PortalId, userName);
-
-                //save userinfo object in context
-                if (context.Items["UserInfo"] != null)
-                {
-                    context.Items["UserInfo"] = userInfo ?? new UserInfo(); //update
-                }
-                else
-                {
-                    context.Items.Add("UserInfo", userInfo = userInfo ?? new UserInfo()); //set new
-                }
-                //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (userInfo != null)
-                    Localization.SetLanguage(userInfo.Profile.PreferredLocale);
-            }//DNN-6673 END
-
-            else if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
+            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
                 //if current login is from windows authentication, the ignore the process
