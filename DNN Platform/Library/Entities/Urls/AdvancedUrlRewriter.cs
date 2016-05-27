@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -95,7 +95,8 @@ namespace DotNetNuke.Entities.Urls
                 if (app.Context != null)
                 {
                     ShowDebugData(app.Context, app.Request.Url.AbsoluteUri, null, ex);
-                    Handle404OrException(_settings, app.Context, ex, null, false, debug);
+                    var action = new UrlAction(app.Request) { Action = ActionType.Output404 };
+                    Handle404OrException(_settings, app.Context, ex, action, false, debug);
                 }
                 else
                 {
@@ -2442,7 +2443,7 @@ namespace DotNetNuke.Entities.Urls
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server 
             // the application should always use the exact relative location of the resource it is requesting 
             var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? "";
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? "";
             if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
             {
                 throw new HttpException(404, "Not Found");

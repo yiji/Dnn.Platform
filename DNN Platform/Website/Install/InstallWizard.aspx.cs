@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -284,6 +284,12 @@ namespace DotNetNuke.Services.Install
         
         private static void LaunchAutoInstall()
         {
+            if (Globals.Status == Globals.UpgradeStatus.None)
+            {
+                HttpContext.Current.Response.Redirect("~/");
+                return;
+            }
+
             //Get current Script time-out
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
 
@@ -301,7 +307,7 @@ namespace DotNetNuke.Services.Install
         private static void Install()
         {
             //bail out early if we are already running
-            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress())
+            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (Globals.Status != Globals.UpgradeStatus.Install))
                 return;
 
             var percentForEachStep = 100 / _steps.Count;
