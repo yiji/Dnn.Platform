@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,6 +48,8 @@ using DotNetNuke.Services.Search.Entities;
 using Microsoft.ApplicationBlocks.Data;
 
 #endregion
+
+// ReSharper disable InconsistentNaming
 
 namespace DotNetNuke.Data
 {
@@ -169,7 +171,9 @@ namespace DotNetNuke.Data
 
 		public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
 
-		public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
+        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
+
+        public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
 
@@ -446,12 +450,6 @@ namespace DotNetNuke.Data
 		#endregion
 
 		#region Host Settings Methods
-
-		public virtual void AddHostSetting(string SettingName, string SettingValue, bool SettingIsSecure,
-										   int CreatedByUserID)
-		{
-			ExecuteNonQuery("AddHostSetting", SettingName, SettingValue, SettingIsSecure, CreatedByUserID);
-		}
 
 		public virtual IDataReader GetHostSetting(string SettingName)
 		{
@@ -781,10 +779,6 @@ namespace DotNetNuke.Data
                                         tab.IsSystem);
         }
 
-		public virtual void AddTabSetting(int TabId, string SettingName, string SettingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabSetting", TabId, SettingName, SettingValue, createdByUserID);
-		}
 
         public virtual int AddTabToEnd(TabInfo tab, int createdByUserID)
         {
@@ -1085,10 +1079,6 @@ namespace DotNetNuke.Data
 											createdByUserID);
 		}
 
-		public virtual void AddModuleSetting(int moduleId, string settingName, string settingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddModuleSetting", moduleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void AddTabModule(int TabId, int ModuleId, string ModuleTitle, string Header, string Footer,
 										 int ModuleOrder, string PaneName, int CacheTime, string CacheMethod,
@@ -1130,11 +1120,6 @@ namespace DotNetNuke.Data
 									  createdByUserID);
 		}
 
-		public virtual void AddTabModuleSetting(int tabModuleId, string settingName, string settingValue,
-												int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabModuleSetting", tabModuleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void DeleteModule(int moduleId)
 		{

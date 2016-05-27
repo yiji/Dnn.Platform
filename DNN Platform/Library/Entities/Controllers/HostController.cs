@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -294,7 +294,7 @@ namespace DotNetNuke.Entities.Controllers
                 }
                 else
                 {
-                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                    DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
                     EventLogController.Instance.AddLog(config.Key,
                                        config.Value,
                                        PortalController.Instance.GetCurrentPortalSettings(),

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -128,6 +128,8 @@ namespace DotNetNuke.Admin.Containers
 
                     DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
                     ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "QS_FirstLoad", "False");
+
+                    ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
                 if (ActionRoot.Visible)

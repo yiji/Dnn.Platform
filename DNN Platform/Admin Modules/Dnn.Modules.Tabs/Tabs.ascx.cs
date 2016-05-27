@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -553,7 +553,9 @@ namespace Dnn.Modules.Tabs
 
         protected void OnCreatePagesClick(object sender, EventArgs e)
         {
-            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) 
+            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
+            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
+            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) && !TabPermissionController.CanAddPage(rootTab))
                 return;
 
             var strValue = txtBulk.Text;
@@ -569,8 +571,6 @@ namespace Dnn.Modules.Tabs
             }
 
             var pages = strValue.Split(char.Parse("\n"));
-            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
-            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
             var tabs = new List<TabInfo>();
 
             foreach (var strLine in pages)
@@ -638,7 +638,7 @@ namespace Dnn.Modules.Tabs
 
             var intTab = Convert.ToInt32(ctlPages.SelectedNode.Value);
             var tab = TabController.Instance.GetTab(intTab, PortalId, true);
-            Page.Validate();
+            Page.Validate("Page");
             if (!Page.IsValid) 
                 return;
             if (tab != null && TabPermissionController.CanManagePage(tab))
