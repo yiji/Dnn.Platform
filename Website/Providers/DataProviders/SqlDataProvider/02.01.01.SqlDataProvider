@@ -488,16 +488,16 @@ GO
 
 CREATE TABLE {databaseOwner}{objectQualifier}Schedule (
 	[ScheduleID] [int] IDENTITY (1, 1) NOT NULL ,
-	[TypeFullName] [varchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[TypeFullName] [varchar] (200) COLLATE Chinese_PRC_CI_AS NOT NULL ,
 	[TimeLapse] [int] NOT NULL ,
-	[TimeLapseMeasurement] [varchar] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[TimeLapseMeasurement] [varchar] (2) COLLATE Chinese_PRC_CI_AS NOT NULL ,
 	[RetryTimeLapse] [int] NOT NULL ,
-	[RetryTimeLapseMeasurement] [varchar] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[RetryTimeLapseMeasurement] [varchar] (2) COLLATE Chinese_PRC_CI_AS NOT NULL ,
 	[RetainHistoryNum] [int] NOT NULL ,
-	[AttachToEvent] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[AttachToEvent] [varchar] (50) COLLATE Chinese_PRC_CI_AS NOT NULL ,
 	[CatchUpEnabled] [bit] NOT NULL ,
 	[Enabled] [bit] NOT NULL ,
-	[ObjectDependencies] [varchar] (300) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+	[ObjectDependencies] [varchar] (300) COLLATE Chinese_PRC_CI_AS NOT NULL 
 ) ON [PRIMARY]
 GO
 
@@ -507,15 +507,15 @@ CREATE TABLE {databaseOwner}{objectQualifier}ScheduleHistory (
 	[StartDate] [datetime] NOT NULL ,
 	[EndDate] [datetime] NULL ,
 	[Succeeded] [bit] NULL ,
-	[LogNotes] [ntext] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[LogNotes] [ntext] COLLATE Chinese_PRC_CI_AS NULL ,
 	[NextStart] [datetime] NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
 CREATE TABLE {databaseOwner}{objectQualifier}ScheduleItemSettings (
 	[ScheduleID] [int] NOT NULL ,
-	[SettingName] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[SettingValue] [nvarchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+	[SettingName] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NOT NULL ,
+	[SettingValue] [nvarchar] (256) COLLATE Chinese_PRC_CI_AS NOT NULL 
 ) ON [PRIMARY]
 GO
 
