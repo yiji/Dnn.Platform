@@ -1,0 +1,95 @@
+
+<!-- View.Item -->
+<div class="article">
+
+    <div class="articleHeadline"><h1>[EDIT][TITLE]</h1></div>
+    <div class="articleAuthor Normal">作者:<a href="[AUTHORLINK]">[AUTHOR]</a> 日期:[PUBLISHSTARTDATE:yyyy-MM-dd][HASRATING] [RATING][/HASRATING]</div>
+
+
+    [HASIMAGES]
+    <div class="articleImages">
+        <h2>相关图片</h2>
+        <div class="imgTrain">
+            [IMAGE]
+        </div>
+    </div>
+    [/HASIMAGES]
+
+
+    <div class="articleEntry Normal">
+        [PAGETEXT]
+        [HASCUSTOMFIELDS][CUSTOMFIELDS][/HASCUSTOMFIELDS]
+        [HASLINK]
+            <p><a href="[LINK]" target="[LINKTARGET]">[Read More...]</a></p>
+        [/HASLINK]
+    </div>
+    
+    [HASMULTIPLEPAGES]
+    <div class="articlePaging Normal">
+        Pages: [CURRENTPAGE] of [PAGECOUNT][HASPREVPAGE] [LINKPREVIOUS][/HASPREVPAGE][HASNEXTPAGE] [LINKNEXT][/HASNEXTPAGE]
+    </div>
+    [/HASMULTIPLEPAGES]
+
+</div>
+
+
+
+[HASCOMMENTSENABLED]
+[ISAUTHOR]
+<div class="articleComments">
+    <h2><a id="Comments">报名历史</a></h2>
+    [HASCOMMENTS][COMMENTS][/HASCOMMENTS]
+</div>
+[/ISAUTHOR]
+
+<div class="postComment">
+    <h2><a id="PostComment">我要报名</a></h2>
+    [POSTCOMMENT]
+</div>
+[/HASCOMMENTSENABLED]
+
+<script type="text/javascript">
+    
+  $(function() {
+
+$('.NewsArticles a[href]').filter(function () {
+        return /(jpg|gif|png)$/.test($(this).attr('href'));
+    }).removeAttr("rel")
+
+
+    var galleries = $('.ad-gallery').adGallery({slideshow: {
+                       enable: true,
+                       autostart: true,
+                       speed: 1000,
+                       start_label: ' ',
+                       stop_label: ' ',
+                       stop_on_scroll: false,
+                       countdown_prefix: '(',
+                       countdown_sufix: 's)',
+                       onStart: true,
+                       onStop: true
+                     }});
+    $('#switch-effect').change(
+      function() {
+        galleries[0].settings.effect = $(this).val();
+        return false;
+      }
+    );
+    $('#toggle-slideshow').click(
+      function() {
+        galleries[0].slideshow.toggle();
+        return false;
+      }
+    );
+    $('#toggle-description').click(
+      function() {
+        if(!galleries[0].settings.description_wrapper) {
+          galleries[0].settings.description_wrapper = $('#descriptions');
+        } else {
+          galleries[0].settings.description_wrapper = false;
+        }
+        return false;
+      }
+    );
+  });
+  </script>

@@ -1,0 +1,15 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeleteCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeleteCategory
+	@CategoryID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories
+WHERE
+	[CategoryID] = @CategoryID
+
+DELETE FROM {databaseOwner}{objectQualifier}GcDesign_Searches_Category
+WHERE
+	[CategoryID] = @CategoryID
+GO

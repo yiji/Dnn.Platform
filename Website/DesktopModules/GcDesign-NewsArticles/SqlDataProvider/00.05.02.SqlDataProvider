@@ -1,0 +1,19 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+	@ModuleID	int
+AS
+
+select 
+	Category.CategoryID,
+	Category.Name,
+	(select count(*) from {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories articleCategories, {databaseOwner}{objectQualifier}GcDesign_Searches_Article articles where categoryid = Category.CategoryID and articleCategories.articleID = articles.ArticleID and articles.IsApproved = 1 AND (articles.StartDate is null or articles.StartDate < DateAdd(mi, 1, GetDate())) AND (articles.EndDate is null or articles.EndDate > DateAdd(mi, 1, GetDate())) ) as 'NumberOfArticles', 
+	(select sum(NumberOfViews) from {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories articleCategories, {databaseOwner}{objectQualifier}GcDesign_Searches_Article articles where categoryid = Category.CategoryID and articleCategories.articleID = articles.ArticleID  AND (articles.StartDate is null or articles.StartDate < DateAdd(mi, 1, GetDate())) AND (articles.EndDate is null or articles.EndDate > DateAdd(mi, 1, GetDate())) ) as 'NumberOfViews'
+from
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Category Category 
+where
+	Category.ModuleID = @ModuleID
+ORDER BY
+	Category.Name
+GO

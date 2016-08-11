@@ -1,0 +1,31 @@
+﻿#calender_wrap{
+	background:url(images/calender_bg.png) no-repeat;
+	width:282px;
+	height:336px;
+	margin-top:10px;
+	float:left;
+	
+}
+#calender_wrap h2{
+	line-height:44px;
+	font-size:14px;
+	padding-left:40px;
+	color:#fff;
+}
+#calender_wrap p{
+	line-height:30px;
+	height:30px;
+	font-size:14px;
+	padding-left:32px;
+	font-family:微软雅黑;
+	margin-top:12px;
+}
+#calender_wrap p span{
+	display:inline-block;
+	width:60px;
+	font-weight:bold;
+	color:#666;
+	line-height:30px;
+	vertical-align:middle;
+	float:left;
+}

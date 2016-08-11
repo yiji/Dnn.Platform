@@ -1,0 +1,7 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+	@ArticleID int
+AS
+GO

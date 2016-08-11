@@ -1,0 +1,72 @@
+<!-- View.Item -->
+<div class="article">
+
+    <div class="articleHeadline"><h1>[EDIT]<a href="[ARTICLELINK]">[TITLE]</a></h1></div>
+    <div class="articleAuthor Normal">作者:<a href="[AUTHORLINK]">[AUTHOR]</a> 日期:[PUBLISHSTARTDATE:yyyy-mm-dd][HASRATING] [RATING][/HASRATING]</div>
+
+    <div class="articleEntry Normal">
+        [PAGETEXT]
+        [HASCUSTOMFIELDS][CUSTOMFIELDS][/HASCUSTOMFIELDS]
+        [HASLINK]
+            <p><a href="[LINK]" target="[LINKTARGET]">[Read More...]</a></p>
+        [/HASLINK]
+    </div>
+    
+    [HASMULTIPLEPAGES]
+    <div class="articlePaging Normal">
+        Pages: [CURRENTPAGE] of [PAGECOUNT][HASPREVPAGE] [LINKPREVIOUS][/HASPREVPAGE][HASNEXTPAGE] [LINKNEXT][/HASNEXTPAGE]
+    </div>
+    [/HASMULTIPLEPAGES]
+    
+    [HASCATEGORIES] 
+    <div class="articleCategories Normal">
+        Posted in: [CATEGORIES]
+    </div>
+    [/HASCATEGORIES]
+
+</div>
+
+[HASIMAGES]
+<div class="articleImages">
+    <h2><a href="Images">相关图片</a></h2>
+    <table><tr><td>[IMAGES]</td></tr></table>
+</div>
+[/HASIMAGES]
+
+[HASFILES]
+<div class="articleFiles">
+    <h2><a href="Files">Related Files</a></h2>
+    [FILES]
+</div>
+[/HASFILES]
+
+[HASRELATED]
+<div class="related">
+    <h2><a id="Related">Related Articles</a></h2>
+    [RELATED]
+</div>
+[/HASRELATED]
+
+<script type="text/javascript">
+    var articleAuthor = "[AUTHORDISPLAYNAME]";
+</script>
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+
+    if (typeof articleAuthor !== 'undefined') {
+        _gaq.push(['_setCustomVar',2,'Author',articleAuthor,3]);
+    }
+    _gaq.push(
+      ['_setAccount', 'UA-72875-1'],
+      ['_trackPageview']
+    );
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+<!-- End Google Analytics -->

@@ -1,0 +1,10 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_CustomValue DROP 
+	CONSTRAINT [PK_{objectQualifier}GcDesign_Searches_CustomValue]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_CustomValue ADD 
+	CONSTRAINT [PK_{objectQualifier}GcDesign_Searches_CustomValue] PRIMARY KEY CLUSTERED 
+	(
+		[CustomValueID]
+	)  ON [PRIMARY] 
+GO

@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LatestArticlesHelp.Text" xml:space="preserve">
+    <value>In this section, you can adjust the settings for the "Latest Articles" module.</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Latest Articles Settings</value>
+  </data>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>基本设置</value>
+  </data>
+  <data name="Module.Text" xml:space="preserve">
+    <value>关联的文章模块</value>
+  </data>
+  <data name="Module.Help" xml:space="preserve">
+    <value>设置该模块要关联的文章模块。</value>
+  </data>
+  <data name="Categories.Text" xml:space="preserve">
+    <value>栏目</value>
+  </data>
+  <data name="Categories.Help" xml:space="preserve">
+    <value>选择要显示的栏目.</value>
+  </data>
+  <data name="AllCategories.Text" xml:space="preserve">
+    <value>所有栏目</value>
+  </data>
+  <data name="MatchAny.Text" xml:space="preserve">
+    <value>匹配任何一个</value>
+  </data>
+  <data name="MatchAll.Text" xml:space="preserve">
+    <value>匹配所有</value>
+  </data>
+  <data name="Count.Text" xml:space="preserve">
+    <value>Number of Articles</value>
+  </data>
+  <data name="Count.Help" xml:space="preserve">
+    <value>Number of articles to display.</value>
+  </data>
+  <data name="StartDate.Text" xml:space="preserve">
+    <value>开始日期</value>
+  </data>
+  <data name="StartDate.Help" xml:space="preserve">
+    <value>文章开始显示的日期</value>
+  </data>
+  <data name="StartDate2.Help" xml:space="preserve">
+    <value>&lt;br&gt;* 留空表示从当前开始.</value>
+  </data>
+  <data name="valStartDate.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;开始日期无效!</value>
+  </data>
+  <data name="MaxAge.Text" xml:space="preserve">
+    <value>最大天数</value>
+  </data>
+  <data name="MaxAge.Help" xml:space="preserve">
+    <value>最大天数内的文章 ,留空表示不限制.</value>
+  </data>
+  <data name="MaxAge2.Help" xml:space="preserve">
+    <value>(天数), 留空表示不限制.</value>
+  </data>
+  <data name="SortBy.Text" xml:space="preserve">
+    <value>排序字段</value>
+  </data>
+  <data name="SortByHelp.Text" xml:space="preserve">
+    <value>选择文章排序字段。</value>
+  </data>
+  <data name="SortDirection.Text" xml:space="preserve">
+    <value>排序方向</value>
+  </data>
+  <data name="SortDirection.Help" xml:space="preserve">
+    <value>旋转我排序方向</value>
+  </data>
+  <data name="Ascending.Text" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="Descending.Text" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="PublishDate.Text" xml:space="preserve">
+    <value>发布日期</value>
+  </data>
+  <data name="LastUpdate.Text" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="HighestRated.Text" xml:space="preserve">
+    <value>Highest Rated</value>
+  </data>
+  <data name="MostCommented.Text" xml:space="preserve">
+    <value>Most Commented</value>
+  </data>
+  <data name="MostViewed.Text" xml:space="preserve">
+    <value>Most Viewed</value>
+  </data>
+  <data name="SortTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="LaunchLinks.Text" xml:space="preserve">
+    <value>Launch Links?</value>
+  </data>
+  <data name="LaunchLinksHelp.Text" xml:space="preserve">
+    <value>Check to launch links into page by itself (no other modules loaded).</value>
+  </data>
+  <data name="FeaturedOnly.Text" xml:space="preserve">
+    <value>只显示置顶文章:</value>
+  </data>
+  <data name="FeaturedOnlyHelp.Text" xml:space="preserve">
+    <value>只显示置顶文章.</value>
+  </data>
+  <data name="NotFeaturedOnly.Text" xml:space="preserve">
+    <value>只显示非置顶文章:</value>
+  </data>
+  <data name="NotFeaturedOnlyHelp.Text" xml:space="preserve">
+    <value>只显示非置顶文章.</value>
+  </data>
+  <data name="AuthorFilter.Text" xml:space="preserve">
+    <value>作者:</value>
+  </data>
+  <data name="AuthorFilter.Help" xml:space="preserve">
+    <value>Optionally filter by author.</value>
+  </data>
+  <data name="cmdSelectAuthor.Text" xml:space="preserve">
+    <value>选择作者</value>
+  </data>
+  <data name="AllAuthors.Text" xml:space="preserve">
+    <value>-- 所有作者 --</value>
+  </data>
+  <data name="plLayoutMode.Text" xml:space="preserve">
+    <value>布局模式</value>
+  </data>
+  <data name="plLayoutMode.Help" xml:space="preserve">
+    <value>择布局模式显示最新文章。</value>
+  </data>
+  <data name="Simple.Text" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="HtmlHeader.Text" xml:space="preserve">
+    <value>HTML Header</value>
+  </data>
+  <data name="HtmlHeader.Help" xml:space="preserve">
+    <value>Enter the header html for the latest articles module.</value>
+  </data>
+  <data name="HtmlBody.Text" xml:space="preserve">
+    <value>HTML Body</value>
+  </data>
+  <data name="HtmlBody.Help" xml:space="preserve">
+    <value>Enter the body html for the latest articles module.</value>
+  </data>
+  <data name="HtmlFooter.Text" xml:space="preserve">
+    <value>HTML Footer</value>
+  </data>
+  <data name="HtmlFooter.Help" xml:space="preserve">
+    <value>Enter the footer html for the latest articles module.</value>
+  </data>
+  <data name="plItemsPerRow.Text" xml:space="preserve">
+    <value>Items Per Row</value>
+  </data>
+  <data name="plItemsPerRow.Help" xml:space="preserve">
+    <value>Enter the number of items to display per row.</value>
+  </data>
+  <data name="valItemsPerRow.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Items Per Row Is Required.</value>
+  </data>
+  <data name="valItemsPerRowIsNumber.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Items Per Row Must Be A Number.</value>
+  </data>
+  <data name="TemplateHelp.Text" xml:space="preserve">
+    <value>模板帮助</value>
+  </data>
+  <data name="TemplateHelpDescription.Text" xml:space="preserve">
+    <value>在本节中，您可以查看用于自定义最新文章模板的标签。</value>
+  </data>
+  <data name="ArticleID.Text" xml:space="preserve">
+    <value>文章ID</value>
+  </data>
+  <data name="ArticleLink.Text" xml:space="preserve">
+    <value>文章链接（链接到实际的文章）</value>
+  </data>
+  <data name="Author.Text" xml:space="preserve">
+    <value>作者名称</value>
+  </data>
+  <data name="AuthorEmail.Text" xml:space="preserve">
+    <value>作者邮箱</value>
+  </data>
+  <data name="AuthorUserName.Text" xml:space="preserve">
+    <value>作者的UserName</value>
+  </data>
+  <data name="AuthorFirstName.Text" xml:space="preserve">
+    <value>The first name of the author</value>
+  </data>
+  <data name="AuthorLastName.Text" xml:space="preserve">
+    <value>The last name of the author</value>
+  </data>
+  <data name="AuthorFullName.Text" xml:space="preserve">
+    <value>The full name of the author</value>
+  </data>
+  <data name="AuthorID.Text" xml:space="preserve">
+    <value>作者ID</value>
+  </data>
+  <data name="CategoriesToken.Text" xml:space="preserve">
+    <value>逗号分隔的栏目列表（栏目有链接）</value>
+  </data>
+  <data name="CommentLink.Text" xml:space="preserve">
+    <value>链接 链接到文章的评论部分</value>
+  </data>
+  <data name="CreateDate.Text" xml:space="preserve">
+    <value>文章创建日期</value>
+  </data>
+  <data name="CreateDateXXX.Text" xml:space="preserve">
+    <value>The creation date of the article, the XXX can be replaced with a date format expression</value>
+  </data>
+  <data name="CreateTime.Text" xml:space="preserve">
+    <value>The creation time of the article</value>
+  </data>
+  <data name="CommentCount.Text" xml:space="preserve">
+    <value>The comment count of the article</value>
+  </data>
+  <data name="Details.Text" xml:space="preserve">
+    <value>Displays the details of the current page.</value>
+  </data>
+  <data name="EditToken.Text" xml:space="preserve">
+    <value>Displays a edit link to authorised users.</value>
+  </data>
+  <data name="HasCategories.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has categories.</value>
+  </data>
+  <data name="HasCommentsEnabled.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has comments enabled.</value>
+  </data>
+  <data name="HasLink.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has a link.</value>
+  </data>
+  <data name="HasMoreDetail.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has more detail.</value>
+  </data>
+  <data name="HasMultiplePages.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has multiple pages.</value>
+  </data>
+  <data name="HasRatingsEnabled.Text" xml:space="preserve">
+    <value>Allows the option to show a section of html if an article has ratings enabled.</value>
+  </data>
+  <data name="Image.Text" xml:space="preserve">
+    <value>The image of the article, displays nothing if no image selected.</value>
+  </data>
+  <data name="ImageLink.Text" xml:space="preserve">
+    <value>The link to the image of the article, displays nothing if no image selected.</value>
+  </data>
+  <data name="ImageThumb.Text" xml:space="preserve">
+    <value>The image of the article (thumbnailed to a width of XXX), displays nothing if no image selected.</value>
+  </data>
+  <data name="ImageThumbLink.Text" xml:space="preserve">
+    <value>The link to the article image (thumbnailed to a width of XXX), displays nothing if no image selected.</value>
+  </data>
+  <data name="Link.Text" xml:space="preserve">
+    <value>The link to the article, url, another page or file.</value>
+  </data>
+  <data name="LinkTarget.Text" xml:space="preserve">
+    <value>The target of the link based on launch links.</value>
+  </data>
+  <data name="ModuleID.Text" xml:space="preserve">
+    <value>The module ID of the article module.</value>
+  </data>
+  <data name="PageCount.Text" xml:space="preserve">
+    <value>The number of pages within an article.</value>
+  </data>
+  <data name="PageText.Text" xml:space="preserve">
+    <value>The detail of the article.</value>
+  </data>
+  <data name="Print.Text" xml:space="preserve">
+    <value>The link to print an article.</value>
+  </data>
+  <data name="PublishDateTag.Text" xml:space="preserve">
+    <value>文章发布日期</value>
+  </data>
+  <data name="PublishDateXXX.Text" xml:space="preserve">
+    <value>文章发布日期, 可以用日期表达式代替XXX</value>
+  </data>
+  <data name="PublishTime.Text" xml:space="preserve">
+    <value>文章发布时间</value>
+  </data>
+  <data name="PublishEndDate.Text" xml:space="preserve">
+    <value>文章发布结束日期</value>
+  </data>
+  <data name="PublishEndTime.Text" xml:space="preserve">
+    <value>文章发布结束时间</value>
+  </data>
+  <data name="Rating.Text" xml:space="preserve">
+    <value>文章评分</value>
+  </data>
+  <data name="RatingCount.Text" xml:space="preserve">
+    <value>文章评分的总次数</value>
+  </data>
+  <data name="RatingDetail.Text" xml:space="preserve">
+    <value>The actual rating value of an article</value>
+  </data>
+  <data name="RssLink.Text" xml:space="preserve">
+    <value>The link to the rss feed</value>
+  </data>
+  <data name="PagesList.Text" xml:space="preserve">
+    <value>A list of pages within the article hyperlinked. If there is only 1 page, token is blank.</value>
+  </data>
+  <data name="Summary.Text" xml:space="preserve">
+    <value>The summary of the article</value>
+  </data>
+  <data name="SummaryXXX.Text" xml:space="preserve">
+    <value>The summary of the article restricted by number of characters, e.g. replace XXX with 50 to restrict to 50 chars.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>文章标题</value>
+  </data>
+  <data name="UpdateDate.Text" xml:space="preserve">
+    <value>文章最后更新日期</value>
+  </data>
+  <data name="UpdateDateXXX.Text" xml:space="preserve">
+    <value>文章最后更新时间, 可以用日期表达式代替XXX</value>
+  </data>
+  <data name="UpdateTime.Text" xml:space="preserve">
+    <value>文章最后更新时间</value>
+  </data>
+  <data name="valCount.ErrorMessage" xml:space="preserve">
+    <value>You must specify the number of articles to display.</value>
+  </data>
+  <data name="valCountType.ErrorMessage" xml:space="preserve">
+    <value>必须是个有效的数字.</value>
+  </data>
+  <data name="valMaxAgeType.ErrorMessage" xml:space="preserve">
+    <value>必须是个有效的数字.</value>
+  </data>
+  <data name="ViewCount.Text" xml:space="preserve">
+    <value>文章访问次数统计</value>
+  </data>
+  <data name="ControlTitle_options.Text" xml:space="preserve">
+    <value>Latest Articles Options</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Latest Articles Options&lt;/h1&gt;&lt;p&gt;This module allows you to choose from the various admin options.&lt;/p&gt;</value>
+  </data>
+  <data name="Random.Text" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="FilterSettings.Text" xml:space="preserve">
+    <value>过滤设置</value>
+  </data>
+  <data name="plQueryStringFilter.Help" xml:space="preserve">
+    <value>选中 以查询字符串中的参数按作者进行过滤</value>
+  </data>
+  <data name="plQueryStringFilter.Text" xml:space="preserve">
+    <value>UserID 过滤:</value>
+  </data>
+  <data name="plQueryStringParam.Help" xml:space="preserve">
+    <value>Enter the name of the parameter to filter on. </value>
+  </data>
+  <data name="plQueryStringParam.Text" xml:space="preserve">
+    <value>UserID 参数:</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>模板</value>
+  </data>
+  <data name="Articles.Text" xml:space="preserve">
+    <value>Latest Articles</value>
+  </data>
+  <data name="ExpiryDate.Text" xml:space="preserve">
+    <value>Expiry Date</value>
+  </data>
+  <data name="StartPoint.Text" xml:space="preserve">
+    <value>Start Point</value>
+  </data>
+  <data name="StartPoint2.Help" xml:space="preserve">
+    <value>(0 to start at beginning)</value>
+  </data>
+  <data name="StartPointHelp" xml:space="preserve">
+    <value>Enter a start point to begin showing articles (0 to start at beginning).</value>
+  </data>
+  <data name="valStartPoint.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Start Point Is Required.</value>
+  </data>
+  <data name="valStartPointIsNumber.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Start Point Must Be A Number.</value>
+  </data>
+  <data name="HtmlNoArticles.Help" xml:space="preserve">
+    <value>没有文章时的模板</value>
+  </data>
+  <data name="HtmlNoArticles.Text" xml:space="preserve">
+    <value>HTML No Articles</value>
+  </data>
+  <data name="NotSecureOnly.Help" xml:space="preserve">
+    <value>选中 只显示非安全文章.</value>
+  </data>
+  <data name="NotSecureOnly.Text" xml:space="preserve">
+    <value>只显示非安全文章</value>
+  </data>
+  <data name="SecureOnly.Help" xml:space="preserve">
+    <value>选中 只显示受保护的文章。</value>
+  </data>
+  <data name="SecureOnly.Text" xml:space="preserve">
+    <value>只显示受保护的</value>
+  </data>
+  <data name="BubbleFeatured.Help" xml:space="preserve">
+    <value>选中将把置顶文章放在列表头部.</value>
+  </data>
+  <data name="BubbleFeatured.Text" xml:space="preserve">
+    <value>文章置顶?</value>
+  </data>
+  <data name="EnablePager.Text" xml:space="preserve">
+    <value>启用分页?</value>
+  </data>
+  <data name="EnablePager.Help" xml:space="preserve">
+    <value>选中 在模块底部显示分页</value>
+  </data>
+  <data name="PageSize.Help" xml:space="preserve">
+    <value>Specify how many articles per page.</value>
+  </data>
+  <data name="PageSize.Text" xml:space="preserve">
+    <value>Pager Size</value>
+  </data>
+  <data name="valPageSize.ErrorMessage" xml:space="preserve">
+    <value>Page Size is Required.</value>
+  </data>
+  <data name="valPageSizeIsNumber.ErrorMessage" xml:space="preserve">
+    <value>Page Size Must Be A Number.</value>
+  </data>
+  <data name="plArticleIDs.Help" xml:space="preserve">
+    <value>请输入以逗号分隔的文章 Id 列表。</value>
+  </data>
+  <data name="plArticleIDs.Text" xml:space="preserve">
+    <value>文章Id 列表</value>
+  </data>
+  <data name="HoldCtrl.Text" xml:space="preserve">
+    <value>按住Ctrel多选.</value>
+  </data>
+  <data name="AuthorFilterSettings.Text" xml:space="preserve">
+    <value>作者过滤设置</value>
+  </data>
+  <data name="plLoggedInUser.Help" xml:space="preserve">
+    <value>Check to filter by the logged in user.</value>
+  </data>
+  <data name="plLoggedInUser.Text" xml:space="preserve">
+    <value>Logged in user Filter:</value>
+  </data>
+  <data name="plUsernameFilter.Help" xml:space="preserve">
+    <value>选中按username过滤.</value>
+  </data>
+  <data name="plUsernameFilter.Text" xml:space="preserve">
+    <value>按Username过滤:</value>
+  </data>
+  <data name="plUsernameParam.Help" xml:space="preserve">
+    <value>Specify what parameter to select from.</value>
+  </data>
+  <data name="plUsernameParam.Text" xml:space="preserve">
+    <value>Username 参数:</value>
+  </data>
+  <data name="plShowPending.Help" xml:space="preserve">
+    <value>选中显示挂起的文章s.</value>
+  </data>
+  <data name="plShowPending.Text" xml:space="preserve">
+    <value>显示挂起的文章</value>
+  </data>
+  <data name="CategoriesExclude.Help" xml:space="preserve">
+    <value>选择要排除的栏目。</value>
+  </data>
+  <data name="CategoriesExclude.Text" xml:space="preserve">
+    <value>排除栏目</value>
+  </data>
+  <data name="plShowRelated.Help" xml:space="preserve">
+    <value>选中 当查看一个栏目或一篇文章时显示相关的文章。</value>
+  </data>
+  <data name="plShowRelated.Text" xml:space="preserve">
+    <value>显示相关文章</value>
+  </data>
+  <data name="plTags.Help" xml:space="preserve">
+    <value>按Tag过滤</value>
+  </data>
+  <data name="plTags.Text" xml:space="preserve">
+    <value>Tags:</value>
+  </data>
+  <data name="TagsHelp.Text" xml:space="preserve">
+    <value>已逗号（英文）分隔关键字 例如： Cowboy,Texas Rodeo,2009</value>
+  </data>
+  <data name="TagFilterSettings.Text" xml:space="preserve">
+    <value>Tag 过滤设置</value>
+  </data>
+  <data name="Category.Text" xml:space="preserve">
+    <value>显示为一个下拉列表，按栏目来过滤.</value>
+  </data>
+  <data name="HeaderFooter.Text" xml:space="preserve">
+    <value>Header/Footer Tokens</value>
+  </data>
+  <data name="Item.Text" xml:space="preserve">
+    <value>Item Tokens</value>
+  </data>
+  <data name="Sort.Text" xml:space="preserve">
+    <value>一个可用于排序的下拉选项</value>
+  </data>
+  <data name="SortXXX.Text" xml:space="preserve">
+    <value>选择关联的排序字段, 有效值为 PublishDate, ExpiryDate, LastUpdate, HighestRated, MostCommented, MostViewed, Random, SortTitle</value>
+  </data>
+  <data name="Time.Text" xml:space="preserve">
+    <value>显示为下拉列表 一个下拉时段进行过滤。</value>
+  </data>
+  <data name="TimeXXX.Text" xml:space="preserve">
+    <value>显示为下拉列表 XXX 默认选中, 例如. Today, Yesterday, ThreeDays, SevenDays, ThirtyDays, NinetyDays, ThisYear, AllTime</value>
+  </data>
+  <data name="CustomField.Help" xml:space="preserve">
+    <value>指定一个自定义字段进行筛选。</value>
+  </data>
+  <data name="CustomField.Text" xml:space="preserve">
+    <value>自定义字段过滤:</value>
+  </data>
+  <data name="SelectCustomField.Text" xml:space="preserve">
+    <value>-- 自定义字段 --</value>
+  </data>
+  <data name="AuthorToken.Text" xml:space="preserve">
+    <value>显示为一个下拉列表，按作者来过滤.</value>
+  </data>
+  <data name="CustomXXX.Text" xml:space="preserve">
+    <value>A dropdown to filter by custom field where XXX is the name of the field. This only works for dropdown lists.</value>
+  </data>
+  <data name="IncludeStylesheet.Help" xml:space="preserve">
+    <value>Check to include the template stylesheet.</value>
+  </data>
+  <data name="IncludeStylesheet.Text" xml:space="preserve">
+    <value>包括 Stylesheet?</value>
+  </data>
+  <data name="LinkFilter.Text" xml:space="preserve">
+    <value>链接过滤:</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Url.Text" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="cmdLoadTemplate.Text" xml:space="preserve">
+    <value>Load from Template</value>
+  </data>
+  <data name="cmdSaveTemplate.Text" xml:space="preserve">
+    <value>保存模板</value>
+  </data>
+  <data name="LoadFromTemplate.Help" xml:space="preserve">
+    <value>Select to load from template</value>
+  </data>
+  <data name="LoadFromTemplate.Text" xml:space="preserve">
+    <value>Load from Template</value>
+  </data>
+  <data name="SaveTemplate.Help" xml:space="preserve">
+    <value>Optionally save the current template for use later. </value>
+  </data>
+  <data name="SaveTemplate.Text" xml:space="preserve">
+    <value>保存模板</value>
+  </data>
+  <data name="SaveTemplateText.Text" xml:space="preserve">
+    <value>(模板名称)</value>
+  </data>
+  <data name="TemplateSaves.Text" xml:space="preserve">
+    <value>保存模板</value>
+  </data>
+</root>

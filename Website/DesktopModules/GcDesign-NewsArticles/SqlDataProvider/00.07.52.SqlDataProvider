@@ -1,0 +1,6 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Handout ADD 
+	CONSTRAINT [PK_{objectQualifier}GcDesign_Searches_Handout] PRIMARY KEY CLUSTERED 
+	(
+		[HandoutID]
+	)  ON [PRIMARY] 
+GO

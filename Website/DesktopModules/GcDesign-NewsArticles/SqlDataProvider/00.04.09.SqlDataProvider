@@ -1,0 +1,12 @@
+﻿UPDATE {databaseOwner}{objectQualifier}GcDesign_Searches_Article
+SET StartDate = CreatedDate
+WHERE StartDate IS NULL
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+	@ModuleID	int
+AS
+GO

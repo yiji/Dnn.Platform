@@ -1,0 +1,88 @@
+<!-- View.Item -->
+<div class="article">
+
+    <div class="articleCalendar articleCalendarIcon-[PUBLISHSTARTDATE:MM]">
+        <div class="articleCalendarDay">[PUBLISHSTARTDATE:dd]</div>
+    </div>
+    <div class="articleHeadline"><h1>[EDIT]<a href="[ARTICLELINK]">[TITLE]</a></h1></div>
+    <div class="articleAuthor Normal"><a href="[AUTHORLINK]">[AUTHOR]</a> posted on [PUBLISHSTARTDATE:MMMM dd, yyyy HH:mm][HASRATING] [RATING][/HASRATING]</div>
+
+    <div class="articleEntry Normal">
+        [PAGETEXT]
+        [HASCUSTOMFIELDS][CUSTOMFIELDS][/HASCUSTOMFIELDS]
+        [HASLINK]
+            <p><a href="[LINK]" target="[LINKTARGET]">[Read More...]</a></p>
+        [/HASLINK]
+    </div>
+    
+    [HASMULTIPLEPAGES]
+    <div class="articlePaging Normal">
+        Pages: [CURRENTPAGE] of [PAGECOUNT][HASPREVPAGE] [LINKPREVIOUS][/HASPREVPAGE][HASNEXTPAGE] [LINKNEXT][/HASNEXTPAGE]
+    </div>
+    [/HASMULTIPLEPAGES]
+    
+    [HASCATEGORIES] 
+    <div class="articleCategories Normal">
+        Posted in: [CATEGORIES]
+    </div>
+    [/HASCATEGORIES]
+
+</div>
+
+[HASIMAGES]
+<div class="articleImages">
+    <h2><a href="Images">车辆图片</a></h2>
+    <table><tr><td>[IMAGES] </table></tr></td>
+</div>
+[/HASIMAGES]
+
+[HASFILES]
+<div class="articleFiles">
+    <h2><a href="Files">Related Files</a></h2>
+    [FILES]
+</div>
+[/HASFILES]
+
+[HASRELATED]
+<div class="related">
+    <h2><a id="Related">Related Articles</a></h2>
+    [RELATED]
+</div>
+[/HASRELATED]
+
+[HASCOMMENTSENABLED]
+<div class="articleComments">
+    <h2><a id="Comments">Comments</a></h2>
+    [HASCOMMENTS][COMMENTS][/HASCOMMENTS]
+    [HASNOCOMMENTS]<span class="Normal">目前还没有评论，快来做第一个！</span>[/HASNOCOMMENTS]
+</div>
+
+<div class="postComment">
+    <h2><a id="PostComment">提交预定</a></h2>
+    [POSTCOMMENT]
+</div>
+[/HASCOMMENTSENABLED]
+
+<script type="text/javascript">
+    var articleAuthor = "[AUTHORDISPLAYNAME]";
+</script>
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+
+    if (typeof articleAuthor !== 'undefined') {
+        _gaq.push(['_setCustomVar',2,'Author',articleAuthor,3]);
+    }
+    _gaq.push(
+      ['_setAccount', 'UA-72875-1'],
+      ['_trackPageview']
+    );
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+<!-- End Google Analytics -->

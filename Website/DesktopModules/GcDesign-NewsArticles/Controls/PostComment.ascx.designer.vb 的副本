@@ -1,0 +1,215 @@
+﻿'------------------------------------------------------------------------------
+' <自动生成>
+'     此代码由工具生成。
+'
+'     对此文件的更改可能会导致不正确的行为，并且如果
+'     重新生成代码，这些更改将会丢失。 
+' </自动生成>
+'------------------------------------------------------------------------------
+
+Option Strict On
+Option Explicit On
+
+Namespace Ventrian.NewsArticles.Controls
+
+    Partial Public Class PostComment
+
+        '''<summary>
+        '''phCommentForm 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents phCommentForm As Global.System.Web.UI.WebControls.PlaceHolder
+
+        '''<summary>
+        '''pName 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents pName As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+        '''<summary>
+        '''txtName 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents txtName As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''lblName 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents lblName As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''valName 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents valName As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+        '''<summary>
+        '''pEmail 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents pEmail As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+        '''<summary>
+        '''txtEmail 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''lblEmail 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents lblEmail As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''valEmail 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents valEmail As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+        '''<summary>
+        '''valEmailIsValid 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents valEmailIsValid As Global.System.Web.UI.WebControls.RegularExpressionValidator
+
+        '''<summary>
+        '''pUrl 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents pUrl As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+        '''<summary>
+        '''txtURL 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents txtURL As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''lblUrl 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents lblUrl As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtComment 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents txtComment As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''valComment 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents valComment As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+        '''<summary>
+        '''ctlCaptcha 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents ctlCaptcha As Global.DotNetNuke.UI.WebControls.CaptchaControl
+
+        '''<summary>
+        '''btnAddComment 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents btnAddComment As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''chkNotifyMe 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents chkNotifyMe As Global.System.Web.UI.WebControls.CheckBox
+
+        '''<summary>
+        '''phCommentPosted 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents phCommentPosted As Global.System.Web.UI.WebControls.PlaceHolder
+
+        '''<summary>
+        '''lblRequiresApproval 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents lblRequiresApproval As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''phCommentAnonymous 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents phCommentAnonymous As Global.System.Web.UI.WebControls.PlaceHolder
+
+        '''<summary>
+        '''lblRequiresAccess 控件。
+        '''</summary>
+        '''<remarks>
+        '''自动生成的字段。
+        '''若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        '''</remarks>
+        Protected WithEvents lblRequiresAccess As Global.System.Web.UI.WebControls.Label
+    End Class
+End Namespace

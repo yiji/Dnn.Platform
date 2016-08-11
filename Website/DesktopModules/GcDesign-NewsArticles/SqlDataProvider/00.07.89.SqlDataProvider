@@ -1,0 +1,21 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetMirrorArticleList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetMirrorArticleList
+	@LinkedArticleID int
+AS
+
+SELECT
+	m.[ArticleID],
+	m.[LinkedArticleID],
+	m.[LinkedPortalID],
+	m.[AutoUpdate],
+	mo.[PortalID]      
+FROM
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Mirror m INNER JOIN
+		{databaseOwner}{objectQualifier}GcDesign_Searches_Article a ON m.ArticleID = a.ArticleID INNER JOIN
+		{databaseOwner}{objectQualifier}Modules mo ON a.ModuleID = mo.ModuleID 
+WHERE
+	m.[LinkedArticleID] = @LinkedArticleID
+GO
+	

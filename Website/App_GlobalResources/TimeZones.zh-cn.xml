@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<!-- 
+Specify timezones here 
+-->
+	<timezone name="(UTC -12:00) 国际日期变更线以西" key="-720" />
+	<timezone name="(UTC -11:00) 中途岛，萨摩亚群岛" key="-660" />
+	<timezone name="(UTC -10:00) 夏威夷" key="-600" />
+	<timezone name="(UTC -09:00) 阿拉斯加" key="-540" />
+	<timezone name="(UTC -08:00) 太平洋时间(美国&amp;加拿大)；蒂华纳" key="-480" />
+	<timezone name="(UTC -07:00) 山地时间(美国&amp;加拿大)" key="-420" />
+	<timezone name="(UTC -06:00) 美国中部时间(美国&amp;加拿大)" key="-360" />
+	<timezone name="(UTC -05:00) 美国东部时间(美国&amp;加拿大)" key="-300" />
+	<timezone name="(UTC -04:00) 大西洋时间(加拿大)" key="-240" />
+	<timezone name="(UTC -03:30) 纽芬兰时间(加拿大)" key="-210" />
+	<timezone name="(UTC -03:00) 布宜诺斯艾利斯，乔治敦" key="-180" />
+	<timezone name="(UTC -02:00) 大西洋中部" key="-120" />
+	<timezone name="(UTC -01:00) 佛得角群岛" key="-60" />
+	<timezone name="(UTC  00:00) 都柏林，爱丁堡，里斯本，伦敦" key="0" />
+	<timezone name="(UTC +01:00) 阿姆斯特丹，柏林，伯尔尼，罗马，巴黎，斯德哥尔摩，维也纳" key="60" />
+	<timezone name="(UTC +02:00) 雅典，布加勒斯特，伊斯坦布尔，明斯克" key="120" />
+	<timezone name="(UTC +03:00) 莫斯科，圣圣彼得堡，伏尔加格勒" key="180" />
+	<timezone name="(UTC +03:30) 德黑兰" key="210" />
+	<timezone name="(UTC +04:00) 阿布扎比，马斯喀特" key="240" />
+	<timezone name="(UTC +04:30) 喀布尔" key="270" />
+	<timezone name="(UTC +05:00) 伊斯兰堡，卡拉奇，塔什干" key="300" />
+	<timezone name="(UTC +05:30) 加尔各答，钦奈，孟买，新德里" key="330" />
+	<timezone name="(UTC +05:45) 加德满都" key="345" />
+	<timezone name="(UTC +06:00) 阿斯塔纳，阿拉木图，达卡，新西伯利亚" key="360" />
+	<timezone name="(UTC +06:30) 仰光(仰光，缅甸)" key="390" />
+	<timezone name="(UTC +07:00) 曼谷，河内，雅加达" key="420" />
+	<timezone name="(UTC +08:00) 北京，重庆，香港，乌鲁木齐" key="480" />
+	<timezone name="(UTC +09:00) 大阪、札幌、东京" key="540" />
+	<timezone name="(UTC +09:30) 阿德莱德，达尔文" key="570" />
+	<timezone name="(UTC +10:00) 堪培拉，墨尔本，悉尼，符拉迪沃斯托克" key="600" />
+	<timezone name="(UTC +11:00) 马加丹，索罗门群岛，新喀里多尼亚" key="660" />
+	<timezone name="(UTC +12:00) 奥克兰，斐济，堪察加半岛，马绍尔群岛" key="720" />
+	<timezone name="(UTC +13:00) 努库阿洛法" key="780" />
+</root>

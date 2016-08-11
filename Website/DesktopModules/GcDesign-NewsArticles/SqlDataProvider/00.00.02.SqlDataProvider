@@ -1,0 +1,271 @@
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article   
+	Add [IsDraft] bit NOT NULL DEFAULT 0
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_Page') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Page (
+	[PageID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ArticleID] [int] NOT NULL ,
+	[Title] [nvarchar] (255) NOT NULL ,
+	[PageText] [ntext] NOT NULL ,
+	[SortOrder] [int] NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_{objectQualifier}GcDesign_Searches_Page') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Page ADD 
+	CONSTRAINT [PK_{objectQualifier}GcDesign_Searches_Page] PRIMARY KEY  CLUSTERED 
+	(
+		[PageID]
+	)  ON [PRIMARY] 
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'DF_{objectQualifier}GcDesign_Searches_Page_SortOrder') and OBJECTPROPERTY(id, N'IsConstraint') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Page ADD 
+	CONSTRAINT [DF_{objectQualifier}GcDesign_Searches_Page_SortOrder] DEFAULT (0) FOR [SortOrder]
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}GcDesign_Searches_Page_{objectQualifier}GcDesign_Searches_Article') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Page ADD 
+	CONSTRAINT [FK_{objectQualifier}GcDesign_Searches_Page_{objectQualifier}GcDesign_Searches_Article] FOREIGN KEY 
+	(
+		[ArticleID]
+	) REFERENCES {databaseOwner}{objectQualifier}GcDesign_Searches_Article (
+		[ArticleID]
+	) ON DELETE CASCADE 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_AddArticle') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_AddArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_AddArticle
+	@CategoryID int,
+	@AuthorID int,
+	@ApproverID int,
+	@CreatedDate datetime,
+	@LastUpdate datetime,
+	@Title nvarchar(255),
+	@Summary nvarchar(4000),
+	@IsApproved bit,
+	@NumberOfViews int,
+	@IsDraft bit
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}GcDesign_Searches_Article (
+	[CategoryID],
+	[AuthorID],
+	[ApproverID],
+	[CreatedDate],
+	[LastUpdate],
+	[Title],
+	[Summary],
+	[IsApproved],
+	[NumberOfViews],
+	[IsDraft]
+) VALUES (
+	@CategoryID,
+	@AuthorID,
+	@ApproverID,
+	@CreatedDate,
+	@LastUpdate,
+	@Title,
+	@Summary,
+	@IsApproved,
+	@NumberOfViews,
+	@IsDraft
+)
+
+select SCOPE_IDENTITY()
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_AddPage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_AddPage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_AddPage
+	@ArticleID int,
+	@Title nvarchar(255), 
+	@PageText ntext,
+	@SortOrder int
+AS
+
+declare @count int
+
+select @count = (select count(*) from {databaseOwner}{objectQualifier}GcDesign_Searches_Page where ArticleID = @ArticleID)
+
+INSERT INTO {databaseOwner}{objectQualifier}GcDesign_Searches_Page (
+	[ArticleID],
+	[Title],
+	[PageText],
+	[SortOrder]
+) VALUES (
+	@ArticleID,
+	@Title,
+	@PageText,
+	@count
+)
+
+select SCOPE_IDENTITY()
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_DeletePage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_DeletePage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeletePage
+	@PageID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}GcDesign_Searches_Page
+WHERE
+	[PageID] = @PageID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+	@ArticleID int
+AS
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleList
+	@ModuleID	int
+AS
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+	@ModuleID	int,
+	@IsApproved	bit
+AS
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthor') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthor
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthor
+	@ModuleID	int,
+	@AuthorID	int
+AS
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthorByApproved') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthorByApproved
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthorByStatus
+	@ModuleID	int,
+	@AuthorID	int,
+	@IsApproved	bit,
+	@IsDraft	bit 
+AS
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetPage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetPage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetPage
+	@PageID int
+AS
+
+SELECT
+	[PageID],
+	[ArticleID],
+	[Title], 
+	[PageText],
+	[SortOrder]
+FROM
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Page
+WHERE
+	[PageID] = @PageID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetPageList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetPageList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetPageList
+	@ArticleID int
+AS
+
+SELECT
+	[PageID],
+	[ArticleID],
+	[Title], 
+	[PageText],
+	[SortOrder]
+FROM
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Page
+
+WHERE
+	[ArticleID] = @ArticleID
+
+ORDER BY
+	[SortOrder] ASC
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_UpdateArticle') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_UpdateArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_UpdateArticle
+	@ArticleID int, 
+	@CategoryID int, 
+	@AuthorID int, 
+	@ApproverID int, 
+	@CreatedDate datetime, 
+	@LastUpdate datetime, 
+	@Title nvarchar(255), 
+	@Summary nvarchar(4000), 
+	@IsApproved bit, 
+	@NumberOfViews int, 
+	@IsDraft bit 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}GcDesign_Searches_Article SET
+	[CategoryID] = @CategoryID,
+	[AuthorID] = @AuthorID,
+	[ApproverID] = @ApproverID,
+	[CreatedDate] = @CreatedDate,
+	[LastUpdate] = @LastUpdate,
+	[Title] = @Title,
+	[Summary] = @Summary,
+	[IsApproved] = @IsApproved,
+	[NumberOfViews] = @NumberOfViews,
+	[IsDraft] = @IsDraft
+WHERE
+	[ArticleID] = @ArticleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_UpdatePage') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_UpdatePage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_UpdatePage
+	@PageID int, 
+	@ArticleID int, 
+	@Title nvarchar(255), 
+	@PageText ntext, 
+	@SortOrder int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}GcDesign_Searches_Page SET
+	[ArticleID] = @ArticleID,
+	[Title] = @Title, 
+	[PageText] = @PageText,
+	[SortOrder] = @SortOrder
+WHERE
+	[PageID] = @PageID
+GO

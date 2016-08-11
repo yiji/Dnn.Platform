@@ -1,0 +1,13 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeleteCustomValue
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeleteCustomValue 
+	@ArticleID int,
+	@CustomFieldID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}GcDesign_Searches_CustomValue
+WHERE
+	[ArticleID] = @ArticleID AND 
+	[CustomFieldID] = @CustomFieldID
+GO

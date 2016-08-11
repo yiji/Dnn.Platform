@@ -1,0 +1,4 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+	DROP CONSTRAINT FK_{objectQualifier}GcDesign_Searches_Article_Users
+GO
+

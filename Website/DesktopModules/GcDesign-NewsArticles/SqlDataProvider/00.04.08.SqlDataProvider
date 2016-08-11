@@ -1,0 +1,23 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories DROP 
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_{objectQualifier}GcDesign_Searches_Article 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories DROP 
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_GcDesign_Searches_Category 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories ADD 
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_{objectQualifier}GcDesign_Searches_Article FOREIGN KEY 
+	(
+		[ArticleID]
+	) REFERENCES {databaseOwner}{objectQualifier}GcDesign_Searches_Article (
+		[ArticleID]
+	) ON DELETE CASCADE
+	NOT FOR REPLICATION ,
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_{objectQualifier}GcDesign_Searches_Category FOREIGN KEY 
+	(
+		[CategoryID]
+	) REFERENCES {databaseOwner}{objectQualifier}GcDesign_Searches_Category (
+		[CategoryID]
+	) NOT FOR REPLICATION 
+GO

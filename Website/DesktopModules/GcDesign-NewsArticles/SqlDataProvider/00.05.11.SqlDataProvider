@@ -1,0 +1,28 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetNewsArchive
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetNewsArchive
+	@ModuleID int, 
+	@CategoryID varchar(255)
+AS
+
+DECLARE @strTop	nvarchar(2000)
+DECLARE @strWhere	nvarchar(2000)
+
+SELECT @strTop = ''
+SELECT @strWhere = ''
+
+IF (@ModuleID is not null)
+	SELECT @strWhere = @strWhere + ' AND Article.ModuleID = ' + convert(nvarchar, @ModuleId)
+	
+IF (@CategoryId is not null)
+	SELECT @strWhere = @strWhere + ' AND Article.ArticleID in ( select ArticleID from {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories where {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories.ArticleID = Article.ArticleID and {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories.CategoryID in (' + @CategoryID + '))'
+
+EXEC('
+select Month(StartDate) as [Month], Year(StartDate) as [Year], 1 as Day, Count(*) as [Count]
+from {databaseOwner}{objectQualifier}GcDesign_Searches_Article Article
+where IsApproved = 1 and IsDraft = 0 ' + 
+	@strWhere + '
+group by Year(StartDate), Month(StartDate)
+order by [Year] desc, [Month] desc')
+GO

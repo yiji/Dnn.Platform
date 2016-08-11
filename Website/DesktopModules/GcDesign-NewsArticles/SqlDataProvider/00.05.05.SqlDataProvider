@@ -1,0 +1,30 @@
+﻿CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetNewsArchive
+	@ModuleID int
+AS
+
+select Month(StartDate) as [Month], Year(StartDate) as [Year], 1 as Day, Count(*) as [Count]
+from {databaseOwner}{objectQualifier}GcDesign_Searches_Article
+where ModuleID = @ModuleID and IsApproved = 1 and IsDraft = 0 
+group by Year(StartDate), Month(StartDate)
+order by [Year] desc, [Month] desc
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListBySearchCriteria
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListBySearchCriteria
+	@ModuleID	int,
+	@CategoryID	varchar(255),
+	@MaxCount	int,
+	@MaxAge	int,
+	@IsApproved	int,
+	@StartDate	datetime,
+	@KeyWords	varchar(255), 
+	@ShowHiddenAndExpired	bit, 
+	@AuthorID	int,
+	@ShowFeaturedOnly bit,
+	@SortBy varchar(50),
+	@Month	int,
+	@Year	int 
+AS
+GO

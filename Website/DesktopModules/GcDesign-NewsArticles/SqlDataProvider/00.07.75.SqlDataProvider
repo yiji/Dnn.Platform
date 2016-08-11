@@ -1,0 +1,7 @@
+﻿CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_SecureCheck
+	@PortalID int, 
+	@ArticleID int,
+	@UserID int 
+AS
+	SELECT 1
+GO

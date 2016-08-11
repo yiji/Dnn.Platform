@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -398,6 +398,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skin", "Skin", "{140B6176-E
 		DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip = DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev Modules", "Dev Modules", "{BF9E5D00-AD5B-4395-9814-D4B5E7160BC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCModuleTest", "Website\DesktopModules\MVC\MVCModuleTest\MVCModuleTest.csproj", "{4130D773-4930-4C21-9BCF-0C5244F585D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnnSpaModuleTest", "Website\DesktopModules\DnnSpaModuleTest\DnnSpaModuleTest.csproj", "{7D61A32C-0F21-453F-A981-BD8E5A3A5304}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GcDesignNewsArticles", "Website\DesktopModules\GcDesign-NewsArticles\GcDesignNewsArticles.csproj", "{C191FD76-63A9-4539-B9B5-340264A4C261}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -794,6 +802,30 @@ Global
 		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|x86.ActiveCfg = Release|Any CPU
 		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|x86.Build.0 = Release|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4130D773-4930-4C21-9BCF-0C5244F585D0}.Release|x86.Build.0 = Release|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304}.Release|x86.Build.0 = Release|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Debug|x86.Build.0 = Debug|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Release|x86.ActiveCfg = Release|Any CPU
+		{C191FD76-63A9-4539-B9B5-340264A4C261}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -888,5 +920,8 @@ Global
 		{C5955B6A-A368-4AF0-A752-198D403437CB} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{140B6176-E045-4F86-ABCA-6C493068F6FA} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{4130D773-4930-4C21-9BCF-0C5244F585D0} = {BF9E5D00-AD5B-4395-9814-D4B5E7160BC7}
+		{7D61A32C-0F21-453F-A981-BD8E5A3A5304} = {BF9E5D00-AD5B-4395-9814-D4B5E7160BC7}
+		{C191FD76-63A9-4539-B9B5-340264A4C261} = {BF9E5D00-AD5B-4395-9814-D4B5E7160BC7}
 	EndGlobalSection
 EndGlobal

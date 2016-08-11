@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="plResults.Text">
+    <value>最多返回条目数:</value>
+	</data>
+	<data name="plResults.Help">
+    <value>输入搜索结果返回条目最大值，如果留空则没有最大值</value>
+	</data>
+	<data name="plTitle.Text">
+    <value>标题最大长度:</value>
+	</data>
+	<data name="plTitle.Help">
+    <value>输入在标题中最多显示多少个字符，如果留空则没有最大值</value>
+	</data>
+	<data name="plDescription.Text">
+    <value>描述最大长度:</value>
+	</data>
+	<data name="plDescription.Help">
+    <value>输入在描述中最多显示多少个字符，如果留空则没有最大值</value>
+	</data>
+	<data name="plShowDescription.Text">
+    <value>显示描述?</value>
+	</data>
+	<data name="plShowDescription.Help">
+    <value>在搜索结果中显示描述</value>
+	</data>
+	<data name="plPage.Text">
+    <value>每页显示:</value>
+	</data>
+	<data name="plPage.Help">
+    <value>输入每页要显示的结果数，如果留空则默认显示10条</value>
+	</data>
+	<data name="ControlTitle_settings.Text">
+    <value>搜索结果设置</value>
+	</data>
+	<data name="ModuleHelp.Text">
+    <value>&lt;h1&gt;
+			关于搜索结果模块设置
+		&lt;/h1&gt;
+		&lt;p&gt;
+			本模块用来显示用户的搜索结果。这里有5个设置项。&amp;nbsp;
+		&lt;/p&gt;
+		&lt;ul&gt;
+			&lt;li&gt;
+				&lt;div align="left"&gt;
+					&lt;b&gt;最大搜索结果&lt;/b&gt; –选择最多显示的结果数&amp;nbsp; &lt;b&gt;&lt;/b&gt;
+				&lt;/div&gt;
+			&lt;li&gt;
+				&lt;div align="left"&gt;
+					&lt;b&gt;每页结果数&lt;/b&gt; - 输入每页要显示的结果数 &lt;b&gt;&lt;/b&gt;
+				&lt;/div&gt;
+			&lt;li&gt;
+				&lt;div align="left"&gt;
+					&lt;b&gt;最大标题长度&lt;/b&gt; - 输入显示标题长度的最大值。&lt;/div&gt;
+			&lt;li&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;b&gt;最大长度&lt;/b&gt; - 输入要显示说明的最大长度（用字符计）。
+			&lt;li&gt;
+				&lt;div align="left"&gt;
+					&lt;b&gt;显示描述&lt;/b&gt; - 是否在搜索结果中显示描述,描述显示的字符数在上面定义。&lt;/div&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;</value>
+	</data>
+  <data name="Validation.ErrorMessage">
+    <value>&lt;br&gt;必须为大于0的整数.</value>
+  </data>
+</root>

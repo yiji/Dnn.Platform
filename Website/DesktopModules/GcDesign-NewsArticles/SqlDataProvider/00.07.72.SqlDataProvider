@@ -1,0 +1,18 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleCategories
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleCategories
+	@ArticleID int
+AS
+
+SELECT      
+	Category.CategoryID, 
+    Category.[Name], 
+    Category.[InheritSecurity]
+FROM         
+	{databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories ArticleCategories, {databaseOwner}{objectQualifier}GcDesign_Searches_Category Category
+WHERE
+	ArticleCategories.CategoryID = Category.CategoryID
+	AND
+	ArticleCategories.ArticleID = @ArticleID
+GO

@@ -1,0 +1,39 @@
+﻿CREATE NONCLUSTERED INDEX [_dta_index_{objectQualifier}GcDesign_Searches_Page] ON {databaseOwner}{objectQualifier}GcDesign_Searches_Page 
+(
+	[SortOrder] ASC,
+	[ArticleID] ASC
+) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX [_dta_index_{objectQualifier}GcDesign_Searches_Article] ON {databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+(
+	[ModuleID] ASC,
+	[ArticleID] ASC,
+	[IsApproved] ASC,
+	[IsDraft] ASC,
+	[EndDate] ASC,
+	[StartDate] ASC
+) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX [_dta_index_{objectQualifier}GcDesign_Searches_Article_Category] ON {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories 
+(
+	[ArticleID] ASC,
+	[CategoryID] ASC
+)ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX [_dta_index_{objectQualifier}GcDesign_Searches_Article_Views] ON {databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+(
+	[ArticleID] ASC
+)
+INCLUDE ( [NumberOfViews]) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX [_dta_index_{objectQualifier}GcDesign_Searches_Article_Status] ON {databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+(
+	[ArticleID] ASC,
+	[IsDraft] ASC,
+	[IsApproved] ASC
+)ON [PRIMARY]
+GO

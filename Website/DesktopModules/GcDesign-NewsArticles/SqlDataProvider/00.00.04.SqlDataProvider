@@ -1,0 +1,8 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+	@ModuleID	int
+AS
+GO

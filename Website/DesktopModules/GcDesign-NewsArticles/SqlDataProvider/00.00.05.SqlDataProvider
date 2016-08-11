@@ -1,0 +1,255 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article ADD
+	StartDate datetime NULL,
+	EndDate datetime NULL,
+	ModuleID int NULL
+GO
+
+UPDATE 
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+SET 
+	{databaseOwner}{objectQualifier}GcDesign_Searches_Article.moduleid = (select moduleid from {databaseOwner}{objectQualifier}GcDesign_Searches_Category where {databaseOwner}{objectQualifier}GcDesign_Searches_Category.categoryid = {databaseOwner}{objectQualifier}GcDesign_Searches_Article.categoryid)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories') and OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories (
+	[ArticleID] [int] NOT NULL ,
+	[CategoryID] [int] NOT NULL 
+) ON [PRIMARY]
+END
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}GcDesign_Searches_ArticleCategories] PRIMARY KEY  CLUSTERED 
+	(
+		[ArticleID],
+		[CategoryID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories ADD 
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_GcDesign_Searches_Article FOREIGN KEY 
+	(
+		[ArticleID]
+	) REFERENCES {databaseOwner}{objectQualifier}GcDesign_Searches_Article (
+		[ArticleID]
+	) NOT FOR REPLICATION ,
+	CONSTRAINT FK_{objectQualifier}GcDesign_Searches_ArticleCategories_GcDesign_Searches_Category FOREIGN KEY 
+	(
+		[CategoryID]
+	) REFERENCES {databaseOwner}{objectQualifier}GcDesign_Searches_Category (
+		[CategoryID]
+	) NOT FOR REPLICATION 
+GO
+
+insert into {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories select ArticleID, CategoryID from {databaseOwner}{objectQualifier}GcDesign_Searches_Article 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article
+	DROP CONSTRAINT FK_{objectQualifier}GcDesign_Searches_Article_{objectQualifier}GcDesign_Searches_Category
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article
+	DROP COLUMN CategoryID
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}GcDesign_Searches_Article WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}GcDesign_Searches_Article_Modules FOREIGN KEY
+	(
+	ModuleID
+	) REFERENCES {databaseOwner}{objectQualifier}Modules
+	(
+	ModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_UpdateArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_UpdateArticle
+	@ArticleID int, 
+	@AuthorID int, 
+	@ApproverID int, 
+	@CreatedDate datetime, 
+	@LastUpdate datetime, 
+	@Title nvarchar(255), 
+	@Summary nvarchar(4000), 
+	@IsApproved bit, 
+	@NumberOfViews int, 
+	@IsDraft bit,
+	@StartDate DateTime,
+	@EndDate DateTime,
+	@ModuleID int 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}GcDesign_Searches_Article SET
+	[AuthorID] = @AuthorID,
+	[ApproverID] = @ApproverID,
+	[CreatedDate] = @CreatedDate,
+	[LastUpdate] = @LastUpdate,
+	[Title] = @Title,
+	[Summary] = @Summary,
+	[IsApproved] = @IsApproved,
+	[NumberOfViews] = @NumberOfViews,
+	[IsDraft] = @IsDraft,
+	[StartDate] = @StartDate,
+	[EndDate] = @EndDate,
+	[ModuleID] = @ModuleID
+WHERE
+	[ArticleID] = @ArticleID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_AddArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_AddArticle
+	@AuthorID int,
+	@ApproverID int,
+	@CreatedDate datetime,
+	@LastUpdate datetime,
+	@Title nvarchar(255),
+	@Summary nvarchar(4000),
+	@IsApproved bit,
+	@NumberOfViews int,
+	@IsDraft bit,
+	@StartDate DateTime,
+	@EndDate DateTime,
+	@ModuleID int
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}GcDesign_Searches_Article (
+	[AuthorID],
+	[ApproverID],
+	[CreatedDate],
+	[LastUpdate],
+	[Title],
+	[Summary],
+	[IsApproved],
+	[NumberOfViews],
+	[IsDraft],
+	[StartDate],
+	[EndDate],
+	[ModuleID]
+) VALUES (
+	@AuthorID,
+	@ApproverID,
+	@CreatedDate,
+	@LastUpdate,
+	@Title,
+	@Summary,
+	@IsApproved,
+	@NumberOfViews,
+	@IsDraft,
+	@StartDate,
+	@EndDate,
+	@ModuleID
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticle
+	@ArticleID int
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleList
+	@ModuleID	int
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+	@ModuleID	int,
+	@IsApproved	bit
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthor
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthor
+	@ModuleID	int,
+	@AuthorID	int
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthorByStatus
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByAuthorByStatus
+	@ModuleID	int,
+	@AuthorID	int,
+	@IsApproved	bit,
+	@IsDraft	bit 
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListBySearchCriteria
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListBySearchCriteria
+	@ModuleID	int,
+	@CategoryID	varchar(255),
+	@MaxCount	int,
+	@MaxAge	int,
+	@IsApproved	int,
+	@StartDate	datetime,
+	@KeyWords	varchar(255)
+AS
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}GcDesign_Searches_GetCategoryStatistics
+	@ModuleID	int
+AS
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_DeleteArticleCategories
+	@ArticleID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories
+WHERE
+	[ArticleID] = @ArticleID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_AddArticleCategory
+	@ArticleID int,
+	@CategoryID int
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories( ArticleID, CategoryID )
+VALUES (@ArticleID, @CategoryID)
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleCategories
+	@ArticleID int
+AS
+
+SELECT      
+	Category.CategoryID, 
+    Category.[Name]
+FROM         
+	{databaseOwner}{objectQualifier}GcDesign_Searches_ArticleCategories ArticleCategories, {databaseOwner}{objectQualifier}GcDesign_Searches_Category Category
+
+WHERE
+	ArticleCategories.CategoryID = Category.CategoryID
+	AND
+	ArticleCategories.ArticleID = @ArticleID
+GO

@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke?- http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -754,6 +754,10 @@ namespace DotNetNuke.Security.Roles
             if (url.StartsWith("/") && HttpContext.Current != null) 
             {
                 //server absolute path
+                if (HttpContext.Current.Request.Url.Port != 80)
+                {
+                    url = string.Format(":{0}{1}", HttpContext.Current.Request.Url.Port.ToString(), url);
+                }
                 return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
             }
             return url;

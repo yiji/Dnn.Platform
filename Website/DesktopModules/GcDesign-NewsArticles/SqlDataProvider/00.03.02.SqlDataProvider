@@ -1,0 +1,8 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GcDesign_Searches_GetArticleListByApproved
+	@ModuleID	int,
+	@IsApproved	bit
+AS
+GO
